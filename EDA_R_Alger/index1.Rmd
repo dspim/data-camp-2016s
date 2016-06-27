@@ -1,0 +1,25 @@
+---
+title: "EDA toturial with R"
+author: "Wush & Johnson <br> @ NTHU"
+date: '`r Sys.Date()`'
+# subtitle:"EDA toturial with R"
+output:
+  ioslides_presentation:
+    css: css/dsp.css
+    # logo: assets/img/Taiwan-R-logo.png
+    widescreen: yes
+    self_contained: false
+---
+
+## About Me {.columns-2}
+
+### Johnson Hsieh, PhD
+- DSP 智庫驅動 資料科學家 [dsp.im](http://dsp.im)
+- Data Science HC 共同創辦人 [FB page](https://www.facebook.com/DataScienceHC)
+    - 教育訓練
+    - 顧問諮詢
+    - 社會服務
+
+
+<img src="img/johnson.jpg" width="400px">
+

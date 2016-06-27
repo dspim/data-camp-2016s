@@ -1,0 +1,25 @@
+R version 3.2.4 (2016-03-10)
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+Running under: OS X 10.10.5 (Yosemite)
+
+locale:
+[1] zh_TW.UTF-8/zh_TW.UTF-8/zh_TW.UTF-8/C/zh_TW.UTF-8/zh_TW.UTF-8
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] wordcloud_2.5      RColorBrewer_1.1-2 pander_0.6.0      
+ [4] quantmod_0.4-5     TTR_0.23-1         xts_0.9-7         
+ [7] zoo_1.7-12         ggplot2_2.1.0      broom_0.4.0       
+[10] dplyr_0.4.3        data.table_1.9.6   xtable_1.8-2      
+[13] magrittr_1.5       knitr_1.13        
+
+loaded via a namespace (and not attached):
+ [1] Rcpp_0.12.4      formatR_1.3      plyr_1.8.3       tools_3.2.4     
+ [5] digest_0.6.9     evaluate_0.8.3   nlme_3.1-125     gtable_0.2.0    
+ [9] lattice_0.20-33  psych_1.5.8      DBI_0.3.1        yaml_2.1.13     
+[13] parallel_3.2.4   stringr_1.0.0    grid_3.2.4       R6_2.1.2        
+[17] rmarkdown_0.9.6  reshape2_1.4.1   tidyr_0.4.1      scales_0.4.0    
+[21] htmltools_0.3.5  assertthat_0.1   mnormt_1.5-4     colorspace_1.2-6
+[25] stringi_1.0-1    munsell_0.4.3    slam_0.1-32      chron_2.3-47    

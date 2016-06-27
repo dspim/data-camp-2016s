@@ -1,0 +1,60 @@
+---
+title: "test"
+subtitle : tesy
+author: "Chung Fu,Yang"
+date: "2016年6月8日"
+output: ioslides_presentation
+---
+
+
+```{r ,echo=FALSE,warning=FALSE,message=F}
+options('scipen'=100,'digits'=2)
+knitr::opts_chunk$set(comment="",prompt=T,strip.white=F,warning=FALSE,message=F,echo=F)
+library(dplyr)
+library(dygraphs)
+library(ggplot2)
+library(ggmap)
+library(data.table)
+library(devtools)
+library(plotly)
+library(rCharts)
+library(tidyr)
+library(DT)
+library(RColorBrewer)
+temp = read.csv("歷年護理人員資料.csv")  #請輸入正確的檔案路徑
+```
+
+
+# 前言
+
+## agenda
+
+- 資廖整理
+    - dplyr
+- ggplot2
+- model
+
+## 研究動機
+
+```{r}
+library(magrittr)
+library(highcharter)
+highchart() %>% 
+  hc_title(text = "Scatter chart with size and color") %>% 
+  hc_add_serie_scatter(mtcars$wt, mtcars$mpg,
+                       mtcars$drat, mtcars$hp)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+

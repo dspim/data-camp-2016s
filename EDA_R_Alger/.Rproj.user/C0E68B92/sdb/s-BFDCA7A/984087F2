@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "---\ntitle: \"20160608dsp會議筆記\"\nauthor: \"Chung Fu,Yang\"\ndate: \"2016年6月8日\"\noutput: html_document\n---\n\n### 會議記錄\n\n* 第一天讀資料\n    + 為什麼要畫這張圖的意義\n    + 同樣的題目用不同圖來比較，看哪張好！？\n* 程式碼斷行問題！\n\nctit+shift+c\n\n\n",
+    "created" : 1465364400702.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "7|8|17|0|\n",
+    "hash" : "334164169",
+    "id" : "984087F2",
+    "lastKnownWriteTime" : 1465364418,
+    "last_content_update" : 1465393661329,
+    "path" : "/Volumes/SD-Lofu/dsp/EDAdsp/EDA-R-gh-pages/20160608dsp會議筆記.Rmd",
+    "project_path" : "20160608dsp會議筆記.Rmd",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 7,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}
