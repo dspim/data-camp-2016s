@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>R Data Engineer</title>
+
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <meta name="generator" content="pandoc" />
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <link rel="stylesheet" media="all" href="RDataEngineerforDSPcamp_files/ioslides-13.5.1/fonts/fonts.css">
+
+  <link rel="stylesheet" media="all" href="RDataEngineerforDSPcamp_files/ioslides-13.5.1/theme/css/default.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="RDataEngineerforDSPcamp_files/ioslides-13.5.1/theme/css/phone.css">
+
+  <base target="_blank">
+
+  <script type="text/javascript">
+    var SLIDE_CONFIG = {
+      // Slide settings
+      settings: {
+                title: 'R Data Engineer',
+                        useBuilds: true,
+        usePrettify: true,
+        enableSlideAreas: true,
+        enableTouch: true,
+                      },
+
+      // Author information
+      presenters: [
+            {
+        name:  'GU Chen (Source from Rafe C. H. Liu, Wush Wu)' ,
+        company: '',
+        gplus: '',
+        twitter: '',
+        www: '',
+        github: ''
+      },
+            ]
+    };
+  </script>
+
+  <style type="text/css">
+
+    b, strong {
+      font-weight: bold;
+    }
+
+    em {
+      font-style: italic;
+    }
+
+    slides > slide {
+      -webkit-transition: all 0.4s ease-in-out;
+      -moz-transition: all 0.4s ease-in-out;
+      -o-transition: all 0.4s ease-in-out;
+      transition: all 0.4s ease-in-out;
+    }
+
+    .auto-fadein {
+      -webkit-transition: opacity 0.6s ease-in;
+      -webkit-transition-delay: 0.4s;
+      -moz-transition: opacity 0.6s ease-in 0.4s;
+      -o-transition: opacity 0.6s ease-in 0.4s;
+      transition: opacity 0.6s ease-in 0.4s;
+      opacity: 0;
+    }
+
+  </style>
+
+  <link rel="stylesheet" href="css/dsp.css" type="text/css" />
+
+
+</head>
+
+<body style="opacity: 0">
+
+<slides class="layout-widescreen">
+
+  <slide class="title-slide segue nobackground">
+        <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+    <hgroup class="auto-fadein">
+      <h1 data-config-title><!-- populated from slide_config.json --></h1>
+      <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
+      <p data-config-presenter><!-- populated from slide_config.json --></p>
+            <p style="margin-top: 6px; margin-left: -2px;">2016年6月29日</p>
+          </hgroup>
+  </slide>
+
+<slide class='segue dark nobackground'><hgroup class = 'auto-fadein'><h2>歡迎進入 R 的資料整形虛擬實境</h2></hgroup><article  id="-r-">
+
+</article></slide><slide class=''><hgroup><h2>Agenda</h2></hgroup><article  id="agenda">
+
+<ul style="font-size: 120%">
+
+<li>
+
+Read JSON data in R
+
+</li>
+
+<li>
+
+Data-Manipulation
+
+</li>
+
+<ul>
+
+<li>
+
+package: magrittr
+
+</li>
+
+<li>
+
+package: dplyr
+
+</li>
+
+<li>
+
+package: reshape2
+
+</li>
+
+</ul>
+
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>讓我們複習一下如何安裝套件吧！</h2></hgroup><article >
+
+<p>
+
+<pre class = 'prettyprint lang-r'># 安裝今早課程所需所有套件
+install.packages(&quot;jsonlite&quot;)
+install.packages(&quot;magrittr&quot;)
+install.packages(&quot;dplyr&quot;)
+install.packages(&quot;reshape2&quot;)
+
+# 將套件載入
+library(jsonlite)
+library(magrittr)
+library(dplyr)
+library(reshape2)</pre>
+
+</article></slide><slide class='segue dark nobackground'><hgroup class = 'auto-fadein'><h2>Ch01 Read JSON data in R</h2></hgroup><article  id="ch01-read-json-data-in-r">
+
+</article></slide><slide class=''><hgroup><h2>Read JSON data in R</h2></hgroup><article  id="read-json-data-in-r">
+
+<h4><strong>什麼是 JSON data？</strong></h4>
+
+<p>
+
+<ul>
+<li>JSON = JavaScriptObjectNotation</li>
+<li>JSON 是網路上非常廣泛被使用的資料格式之一，尤其在<code>各種傳遞資料的API</code>中
+
+<ul>
+<li>eg. 臺北市的 Youbike API 資料、Facebook 上的 API 資料</li>
+<li><a href='https://zh.wikipedia.org/wiki/应用程序接口' title=''>API是什麼？</a>
+
+<p>
+
+<p>
+
+<strong><code>只會讀csv太low！我們要來點進階的！</code></strong></li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Read JSON data in R (Cont.)</h2></hgroup><article  id="read-json-data-in-r-cont.">
+
+<h4><strong>先來看看 JSON data 的長相吧！</strong></h4>
+
+<p>
+
+<img src='img/JSONdata.png' style='height: 300px'></img>
+
+<p>
+
+<ul>
+<li>一個完整的訊息被<code>{}</code>給包住了！也就是一個 JSON 物件</li>
+<li>每個 JSON 物件中都有一對對的名稱與值(eg. &quot;sna&quot;:&quot;捷運市政府站(3號出口)&quot;)</li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Read JSON data in R (Cont.)</h2></hgroup><article  id="read-json-data-in-r-cont.-1">
+
+<h4><strong>開始實戰讀 JSON data！</strong></h4>
+
+<p>
+
+<ul>
+<li>請先於下方 <code>Console</code> 輸入：<code>vignette(&quot;json-aaquickstart&quot;, &quot;jsonlite&quot;)</code>
+
+<ul>
+<li>什麼是 vignette ? Ans：學習套件的起手式！</li>
+</ul></li>
+<li>這時<code>檔案系統區</code>應該會開啟一個 <code>html</code> 的網頁，此為幫助我們上手 jsonlite 物件的祕笈！</li>
+<li>基本款：使用 jsonlite 套件提供的 toJSON 和 fromJSON 即可在不損失任何資訊下在 R 與 JSON data 間進行轉換</li>
+</ul>
+
+<pre class = 'prettyprint lang-r'># A JSON array of primitives
+json &lt;- &#39;[&quot;Mario&quot;, &quot;Peach&quot;, null, &quot;Bowser&quot;]&#39;
+# Simplifies into an atomic vector
+fromJSON(json)</pre>
+
+<pre >[1] &quot;Mario&quot;  &quot;Peach&quot;  NA       &quot;Bowser&quot;</pre>
+
+</article></slide><slide class=''><hgroup><h2>Read JSON data in R (Cont.)</h2></hgroup><article  id="read-json-data-in-r-cont.-2">
+
+<h4><strong>開始實戰讀 Youbike data！</strong></h4>
+
+<p>
+
+<ol>
+<li><p>到這裡下載最新的 Youbike 即時資訊檔吧！<a href='http://data.taipei/opendata/datalist/datasetMeta?oid=8ef1626a-892a-4218-8344-f7ac46e1aa48' title=''>YouBike臺北市公共自行車即時資訊</a></p></li>
+<li><p>把下載好的 <code>YoubikeTP</code> 檔放入工作目錄底下方便讀取！(Hint: getwd())</p></li>
+<li><p>開啟你的 RStudio (應該已經開啟了吧！？)</p></li>
+<li><p>我們要開始寫 code 囉！</p></li>
+</ol>
+
+</article></slide><slide class=''><hgroup><h2>Read JSON data in R (Cont.)</h2></hgroup><article  id="read-json-data-in-r-cont.-3">
+
+<h4><strong>開始實戰讀 Youbike data！(Cont.)</strong></h4>
+
+<p>
+
+<pre class = 'prettyprint lang-r'># 讀入剛剛下載的youbike檔案
+youbike_data &lt;- fromJSON(&quot;YoubikeTP&quot;)
+
+# 由於讀入後R會將檔案存成list格式，故我們要先將list格式變成charactor vector
+youbike_chr &lt;- unlist(youbike_data)
+head(youbike_chr)</pre>
+
+<pre >                retCode         retVal.0001.sno         retVal.0001.sna 
+                    &quot;1&quot;                  &quot;0001&quot; &quot;捷運市政府站(3號出口)&quot; 
+        retVal.0001.tot         retVal.0001.sbi       retVal.0001.sarea 
+                  &quot;180&quot;                    &quot;72&quot;                &quot;信義區&quot; </pre>
+
+</article></slide><slide class=''><hgroup><h2>Read JSON data in R (Cont.)</h2></hgroup><article  id="read-json-data-in-r-cont.-4">
+
+<h4><strong>開始實戰讀 Youbike data！(Cont.)</strong></h4>
+
+<p>
+
+<pre class = 'prettyprint lang-r'># 將每一個charactor填入matrix中，matrix為矩陣的意思
+# byrow = T的意思是將資料依列擺入，ncol為行數，其餘參數怎麼用？請自行輸入：?matrix
+youbike_mat &lt;- matrix(youbike_chr, byrow = T, ncol = 14)
+
+# 將matrix轉為dataframe格式
+youbike &lt;- data.frame(youbike_mat, stringsAsFactors = F)
+
+# 輸入youbike行的變數名稱
+colnames(youbike) &lt;- c(&quot;act&quot;,&quot;sno&quot;,&quot;sna&quot;,&quot;tot&quot;,&quot;sbi&quot;,&quot;sarea&quot;,&quot;mday&quot;,&quot;lat&quot;,&quot;lng&quot;,&quot;ar&quot;,&quot;sareaen&quot;,&quot;snaen&quot;,&quot;aren&quot;,&quot;bemp&quot;)
+
+# 取前六筆看看
+head(youbike)</pre>
+
+</article></slide><slide class=''><hgroup><h2>Read JSON data in R (Cont.)</h2></hgroup><article  id="read-json-data-in-r-cont.-5">
+
+<h4><strong>開始實戰讀 Youbike data！(Cont.)</strong></h4>
+
+<p>
+
+<pre >  act  sno                       sna tot sbi  sarea           mday
+1   1 0001     捷運市政府站(3號出口) 180  72 信義區 20160621234933
+2   1 0002 捷運國父紀念館站(2號出口)  48  13 大安區 20160621234915
+3   1 0003                台北市政府  40   4 信義區 20160621234923
+4   1 0004                  市民廣場  60  17 信義區 20160621234936
+5   1 0005                  興雅國中  60  26 信義區 20160621234910
+6   1 0006                  世貿二館  80  27 信義區 20160621234918
+            lat           lng                              ar     sareaen
+1 25.0408578889 121.567904444         忠孝東路/松仁路(東南側) Xinyi Dist.
+2     25.041254     121.55742 忠孝東路四段/光復南路口(西南側)  Daan Dist.
+3 25.0377972222 121.565169444          台北市政府東門(松智路) Xinyi Dist.
+4 25.0360361111    121.562325           市府路/松壽路(西北側) Xinyi Dist.
+5 25.0365638889   121.5686639       松仁路/松仁路95巷(東南側) Xinyi Dist.
+6 25.0347361111 121.565658333           松智路/松廉路(東北側) Xinyi Dist.
+                                      snaen
+1   MRT Taipei City Hall Stataion(Exit 3)-2
+2 MRT S.Y.S Memorial Hall Stataion(Exit 2.)
+3                          Taipei City Hall
+4                            Citizen Square
+5                    Xingya Jr. High School
+6                    TWTC Exhibition Hall 2
+                                                         aren bemp
+1 The S.W. side of Road Zhongxiao East Road &amp; Road Chung Yan.  106
+2                         Sec,4. Zhongxiao E.Rd/GuangFu S. Rd   35
+3             Taipei City Government Eastgate (Song Zhi Road)   36
+4               The N.W. side of Road Shifu &amp; Road Song Shou.   43
+5        The S.E. side of Road Songren &amp; Ln. 95, Songren Rd..   34
+6            The N.E. side of Road Song Zhi &amp; Road Song Lian.   49</pre>
+
+</article></slide><slide class=''><hgroup><h2>Read JSON data in R (Cont.)</h2></hgroup><article  id="read-json-data-in-r-cont.-6">
+
+<h4><strong>開始實戰讀 Youbike data！(Cont.)</strong></h4>
+
+<p>
+
+<pre class = 'prettyprint lang-r'># 取後六筆看看
+tail(youbike)</pre>
+
+<pre >    act  sno              sna                   tot sbi  sarea
+240   1 0252     大安運動中心                    42   9 大安區
+241   1 0255   光復南路22巷口                    30  26 松山區
+242   1 0256     中山中正路口                    40  10 士林區
+243   1 0258 聯合醫院中興院區                    40   4 大同區
+244   1 0259     南京遼寧街口                    36  13 中山區
+245   1    1             0001 捷運市政府站(3號出口) 180     72
+              mday            lat           lng
+240 20160621234935      25.020544    121.545608
+241 20160621234920      25.046914    121.557674
+242 20160621234932      25.096507    121.527526
+243 20160621234911      25.052096    121.507979
+244 20160621234921      25.051761    121.542168
+245         信義區 20160621234933 25.0408578889
+                                             ar                 sareaen
+240      辛亥路三段55號前方人行道(大安運動中心)              Daan Dist.
+241                      光復南路23號對面人行道          Songshan Dist.
+242 中山北路五段609-625號前人行道(中山中正路口)            Shilin Dist.
+243                   長安西路299-2號對面人行道            Datong Dist.
+244   南京東路三段189號對面(南京遼寧街口東南側)         Zhongshan Dist.
+245                               121.567904444 忠孝東路/松仁路(東南側)
+                                      snaen
+240                      Daan Sports Center
+241                  Ln. 22, Guangfu S. Rd.
+242    Zhongshan &amp; Zhongzheng  Intersection
+243 Taipei City Hospital (Zhongxing Branch)
+244         Nanjing &amp; Liaoning Intersection
+245                             Xinyi Dist.
+                                          aren
+240                  No.55, Sec. 3, Xinhai Rd.
+241             No.23, Guangfu S. Rd.(oppsite)
+242 No.609 to No.625, Sec. 5, Zhongshan N. Rd.
+243        No.299-2, Chang’an W. Rd.(oppsite)
+244    No.189, Sec. 3, Nanjing E. Rd.(oppsite)
+245    MRT Taipei City Hall Stataion(Exit 3)-2
+                                                           bemp
+240                                                          33
+241                                                           4
+242                                                          29
+243                                                          35
+244                                                          22
+245 The S.W. side of Road Zhongxiao East Road &amp; Road Chung Yan.</pre>
+
+</article></slide><slide class=''><hgroup><h2>Read JSON data in R (Cont.)</h2></hgroup><article  id="read-json-data-in-r-cont.-7">
+
+<h4><strong>開始實戰讀 Youbike data！(Cont.)</strong></h4>
+
+<p>
+
+<pre class = 'prettyprint lang-r'># 發現最後一列跑掉，將最後一列去掉
+youbike &lt;- youbike[-nrow(youbike),]
+
+# 再檢查一次最後三筆資料
+tail(youbike)</pre>
+
+<pre >    act  sno              sna tot sbi  sarea           mday       lat
+239   1 0251         華齡公園  36  23 士林區 20160621234923 25.083023
+240   1 0252     大安運動中心  42   9 大安區 20160621234935 25.020544
+241   1 0255   光復南路22巷口  30  26 松山區 20160621234920 25.046914
+242   1 0256     中山中正路口  40  10 士林區 20160621234932 25.096507
+243   1 0258 聯合醫院中興院區  40   4 大同區 20160621234911 25.052096
+244   1 0259     南京遼寧街口  36  13 中山區 20160621234921 25.051761
+           lng                                          ar         sareaen
+239 121.520692                  劍潭路80對面公園(華齡公園)    Shilin Dist.
+240 121.545608      辛亥路三段55號前方人行道(大安運動中心)      Daan Dist.
+241 121.557674                      光復南路23號對面人行道  Songshan Dist.
+242 121.527526 中山北路五段609-625號前人行道(中山中正路口)    Shilin Dist.
+243 121.507979                   長安西路299-2號對面人行道    Datong Dist.
+244 121.542168   南京東路三段189號對面(南京遼寧街口東南側) Zhongshan Dist.
+                                      snaen
+239                            Hualing Park
+240                      Daan Sports Center
+241                  Ln. 22, Guangfu S. Rd.
+242    Zhongshan &amp; Zhongzheng  Intersection
+243 Taipei City Hospital (Zhongxing Branch)
+244         Nanjing &amp; Liaoning Intersection
+                                          aren bemp
+239                No.80, Jiantan Rd.(oppsite)   13
+240                  No.55, Sec. 3, Xinhai Rd.   33
+241             No.23, Guangfu S. Rd.(oppsite)    4
+242 No.609 to No.625, Sec. 5, Zhongshan N. Rd.   29
+243        No.299-2, Chang’an W. Rd.(oppsite)   35
+244    No.189, Sec. 3, Nanjing E. Rd.(oppsite)   22</pre>
+
+</article></slide><slide class='segue dark nobackground'><hgroup class = 'auto-fadein'><h2>CH02-1 Data-Manipulation：magrittr</h2></hgroup><article  id="ch02-1-data-manipulationmagrittr">
+
+</article></slide><slide class=''><hgroup><h2>Data-Manipulation：magrittr</h2></hgroup><article  id="data-manipulationmagrittr">
+
+<h4><strong>用好工具先來養成好習慣：Pipeline</strong></h4>
+
+<p>
+
+<ul>
+<li>壓縮的程式碼不易讀且複雜</li>
+<li>展開的程式碼好讀但是太冗長，而且產生過多暫存變數
+
+<p>
+
+<p>
+
+<strong>magrittr 套件聽到大家的聲音了！</strong>
+
+<p>
+
+<p></li>
+<li>養成 <code>Pipeline Style</code> 的 coding 習慣，上述問題迎刃而解！
+
+<ul>
+<li>Pipeline 快捷鍵：ctrl / command + shift + M</li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Data-Manipulation：magrittr (Cont.)</h2></hgroup><article  id="data-manipulationmagrittr-cont.">
+
+<h4><strong>用好工具先來養成好習慣：Pipeline</strong></h4>
+
+<p><img src='img/pipeline.jpg' style='height: 450px'></img></p>
+
+</article></slide><slide class=''><hgroup><h2>Data-Manipulation：magrittr (Cont.)</h2></hgroup><article  id="data-manipulationmagrittr-cont.-1">
+
+<h4><strong>直接來點例子吧！</strong></h4>
+
+<p>
+
+<pre class = 'prettyprint lang-r'># 舊方法
+temp1 &lt;- youbike$sarea
+temp1 &lt;- as.character(temp1)
+counts &lt;- table(temp1)
+counts</pre>
+
+<pre >temp1
+北投區 大安區 大同區 南港區 內湖區 士林區 松山區 萬華區 文山區 信義區 
+    16     34     15     14     20     22     17     16     16     28 
+中山區 中正區 
+    27     19 </pre>
+
+</article></slide><slide class=''><hgroup><h2>Data-Manipulation：magrittr (Cont.)</h2></hgroup><article  id="data-manipulationmagrittr-cont.-2">
+
+<h4><strong>直接來點例子吧！(Cont.)</strong></h4>
+
+<p>
+
+<pre class = 'prettyprint lang-r'># Pipeline
+youbike$sarea %&gt;% 
+  as.character() %&gt;% 
+  table()</pre>
+
+<pre >.
+北投區 大安區 大同區 南港區 內湖區 士林區 松山區 萬華區 文山區 信義區 
+    16     34     15     14     20     22     17     16     16     28 
+中山區 中正區 
+    27     19 </pre>
+
+</article></slide><slide class='segue dark nobackground'><hgroup class = 'auto-fadein'><h2>CH02-2 Data-Manipulation：dplyr</h2></hgroup><article  id="ch02-2-data-manipulationdplyr">
+
+</article></slide><slide class=''><hgroup><h2>Data-Manipulation：dplyr</h2></hgroup><article  id="data-manipulationdplyr">
+
+<h4><strong>R 界的資料首席外科醫師：dplyr</strong></h4>
+
+<p>
+
+<ul>
+<li>Hadley Wickham 和 Romain Francois 在2014年上架的一個套件</li>
+<li>提供許多<code>直觀的函數</code>讓 R user 在<code>資料整理上更便利</code></li>
+<li>可以結合 magrittr 套件中的 <code>Pipeline</code>！</li>
+<li>針對 <code>data.frame</code> 做設計的套件</li>
+<li><code>處理效能</code>被 Romain 利用 C++ <code>優化過</code></li>
+<li>能與 <code>SQL 語法</code>以及 <code>Excel</code> 的<code>樞紐分析表</code>互相對應</li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Data-Manipulation：dplyr (Cont.)</h2></hgroup><article  id="data-manipulationdplyr-cont.">
+
+<h4><strong>如何自學 dplyr？</strong></h4>
+
+<p>
+
+<ul>
+<li>學習套件的起手式：<code>vignette(package = &quot;dplyr&quot;)</code></li>
+<li>想要學得透徹可以閱讀 Hadley 大大 為 dplyr 撰寫的小論文
+
+<p></li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>vignette(all = TRUE, package = &quot;dplyr&quot;)
+
+vignette(&quot;introduction&quot;, package = &quot;dplyr&quot;)</pre>
+
+<p>
+
+<ul>
+<li>dplyr 懶人包：
+
+<ul>
+<li><a href='https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf' title=''>Cheat Sheet of dplyr</a></li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Data-Manipulation：dplyr (Cont.)</h2></hgroup><article  id="data-manipulationdplyr-cont.-1">
+
+<h4><strong>必先利其器：整形醫材簡介</strong></h4>
+
+<p>
+
+<ul>
+<li><code>select</code>：對欄進行篩選</li>
+<li><code>filter</code>：對列進行<code>條件</code>篩選</li>
+<li><code>slice</code>：對列進行篩選</li>
+<li><code>mutate</code>：更改欄位或新增欄位</li>
+<li><code>group_by + summarise</code>：依照類別進行彙整</li>
+<li><code>arrange</code>：排序</li>
+<li><code>bind_rows, bind_cols</code>：合併列、合併行</li>
+<li><code>join family</code>：
+
+<ul>
+<li>mutating join：<code>left_join</code>, <code>right_join</code>, <code>inner_join</code>, <code>full_join</code></li>
+</ul></li>
+<li><code>intersect</code>, <code>union</code>, <code>setdiff</code></li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Data-Manipulation：dplyr (Cont.)</h2></hgroup><article  id="data-manipulationdplyr-cont.-2">
+
+<h4><strong>我們來將今天要用到的檔案讀入R吧！</strong></h4>
+
+<p>
+
+<pre class = 'prettyprint lang-r'># 讀入歷屆護理人員資料
+data_nurse &lt;- read.csv(&quot;歷年護理人員資料.csv&quot;,
+                 header = T,
+                 sep = &quot;,&quot;,
+                 stringsAsFactors = F,
+                 fileEncoding = &quot;UTF-8&quot;)
+# 看看資料結構
+str(data_nurse)</pre>
+
+<pre >&#39;data.frame&#39;:   25634 obs. of  6 variables:
+ $ 性別    : chr  &quot;F&quot; &quot;F&quot; &quot;F&quot; &quot;F&quot; ...
+ $ 醫療層級: chr  &quot;醫學中心&quot; &quot;醫學中心&quot; &quot;醫學中心&quot; &quot;醫學中心&quot; ...
+ $ 縣市    : chr  &quot;高雄市&quot; &quot;高雄市&quot; &quot;高雄市&quot; &quot;高雄市&quot; ...
+ $ 年齡    : int  20 20 20 20 20 20 20 20 21 21 ...
+ $ 年度    : int  2005 2006 2007 2008 2009 2010 2011 2012 2005 2006 ...
+ $ 人數    : int  56 17 11 1 5 5 7 7 71 75 ...</pre>
+
+</article></slide><slide class=''><hgroup><h2>Data-Manipulation：dplyr (Cont.)</h2></hgroup><article  id="data-manipulationdplyr-cont.-3">
+
+<h4><strong>我們來將今天要用到的檔案讀入R吧！(Cont.)</strong></h4>
+
+<p>
+
+<pre class = 'prettyprint lang-r'># 讀入youbike檔案
+data_ubike &lt;- read.csv(&quot;ubike-hour-201502-utf8.csv&quot;,
+                  header = T,
+                  sep = &quot;,&quot;,
+                  stringsAsFactors = F,
+                  fileEncoding = &quot;UTF-8&quot;)</pre>
+
+</article></slide><slide class=''><hgroup><h2>Data-Manipulation：dplyr (Cont.)</h2></hgroup><article  id="data-manipulationdplyr-cont.-4">
+
+<h4><strong>我們來將今天要用到的檔案讀入R吧！(Cont.)</strong></h4>
+
+<p>
+
+<pre class = 'prettyprint lang-r'># 看看資料結構
+str(data_ubike)</pre>
+
+<pre >&#39;data.frame&#39;:   135859 obs. of  21 variables:
+ $ date     : chr  &quot;2015-02-01&quot; &quot;2015-02-01&quot; &quot;2015-02-01&quot; &quot;2015-02-01&quot; ...
+ $ hour     : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ sno      : int  1 2 3 5 7 8 11 12 13 15 ...
+ $ sarea    : chr  &quot;信義區&quot; &quot;大安區&quot; &quot;信義區&quot; &quot;信義區&quot; ...
+ $ sna      : chr  &quot;捷運市政府站(3號出口)&quot; &quot;捷運國父紀念館站(2號出口)&quot; &quot;台北市政府&quot; &quot;興雅國中&quot; ...
+ $ lat      : num  25 25 25 25 25 ...
+ $ lng      : num  122 122 122 122 122 ...
+ $ tot      : int  180 48 40 60 80 60 66 34 66 60 ...
+ $ avg.sbi  : num  4.153 1.322 0.407 1.22 2.949 ...
+ $ max.sbi  : int  11 5 1 3 9 7 21 24 48 38 ...
+ $ min.sbi  : int  0 0 0 0 0 0 16 2 35 17 ...
+ $ std.sbi  : num  3.643 1.383 0.495 0.966 3.345 ...
+ $ avg.bemp : num  175.8 46.7 39.6 57.8 76 ...
+ $ max.bemp : int  180 48 40 59 79 59 50 32 31 43 ...
+ $ min.bemp : int  169 43 39 56 69 52 45 10 18 22 ...
+ $ std.bemp : num  3.643 1.383 0.495 0.966 3.476 ...
+ $ temp     : num  13.7 13.8 13.8 13.8 13.9 ...
+ $ humidity : num  87.5 86.8 87.3 87.6 87.5 ...
+ $ pressure : num  1026 1025 1026 1026 1026 ...
+ $ max.anemo: num  1.777 0.852 1.613 1.913 1.909 ...
+ $ rainfall : num  0 0 0 0 0 0 0 0 0 0 ...</pre>
+
+</article></slide><slide class=''><hgroup><h2>Data-Manipulation：dplyr (Cont.)</h2></hgroup><article  id="data-manipulationdplyr-cont.-5">
+
+<h4><strong>Youbike 資料欄位說明</strong></h4>
+
+<p>
+
+<pre >   英文欄位名稱 中文欄位名稱 英文欄位名稱.1 中文欄位名稱.1
+1          date         日期        std.sbi   車輛數標準差
+2          hour         時間       avg.bemp     平均空位數
+3           sno     場站代號       max.bemp     最大空位數
+4         sarea     場站區域       min.bemp     最小空位數
+5           sna     場站名稱       std.bemp   空位數標準差
+6           lat         緯度           temp       平均氣溫
+7           lng         經度       humidity           濕度
+8           tot     總停車格       pressure           氣壓
+9       avg.sbi   平均車輛數      max.anemo       最大風速
+10      max.sbi   最大車輛數       rainfull         降雨量
+11      min.sbi   最小車輛數                              </pre>
+
+</article></slide><slide class=''><hgroup><h2>Data-Manipulation：dplyr (Cont.)</h2></hgroup><article  id="data-manipulationdplyr-cont.-6">
+
+<h4><strong>我們來假設一個情境&#8230;</strong></h4>
+
+<p>
+
+<p>
+
+GU 畢業後想在信義區附近租房子，大安區上班，希望以後上下班可以靠 ubike 通勤，故希望每天<code>早上7:00左右</code>與<code>下午19:00左右</code>都可以輕鬆的租借到ubike。
+
+<p>
+
+<ul>
+<li>請幫 GU 找出信義區早上7:00與大安區下午19:00腳踏車最多的場站</li>
+<li>也請幫 GU 找出大安區早上8:00與信義區下午20:00空位數最多的場站</li>
+</ul>
+
+<p><strong><code>程式碼要怎麼寫呢......？一步一步來吧！</code></strong></p>
+
+</article></slide><slide class=''><hgroup><h2>Data-Manipulation：dplyr (Cont.)</h2></hgroup><article  id="data-manipulationdplyr-cont.-7">
+
+<h4><strong>select</strong></h4>
+
+<p>
+
+<p><img src='img/select.png' style='height: 400px'></img></p>
+
+</article></slide><slide class=''><hgroup><h2>Data-Manipulation：dplyr (Cont.)</h2></hgroup><article  id="data-manipulationdplyr-cont.-8">
+
+<h4><strong>首先，我們會利用 <code>select</code> 挑選出需要的欄位</strong></h4>
+
+<p>
+
+<pre class = 'prettyprint lang-r'># 挑出時間、場站區域、場站名稱、平均車輛數
+data_ubike %&gt;% 
+  select(hour, sarea, sna, avg.sbi) %&gt;% 
+  head()</pre>
+
+<pre >  hour  sarea                       sna avg.sbi
+1    0 信義區     捷運市政府站(3號出口)   4.153
+2    0 大安區 捷運國父紀念館站(2號出口)   1.322
+3    0 信義區                台北市政府   0.407
+4    0 信義區                  興雅國中   1.220
+5    0 信義區         信義廣場(台北101)   2.949
+6    0 信義區                  世貿三館   1.983</pre>
+
+</article></slide><slide class=''><hgroup><h2>Data-Manipulation：dplyr (Cont.)</h2></hgroup><article  id="data-manipulationdplyr-cont.-9">
+
+<h4><strong>filter</strong></h4>
+
+<p>
+
+<p><img src='img/filter.png' style='height: 400px'></img></p>
+
+</article></slide><slide class=''><hgroup><h2>Data-Manipulation：dplyr (Cont.)</h2></hgroup><article  id="data-manipulationdplyr-cont.-10">
+
+<h4><strong>再來，我們要篩選出信義區早上7:00與大安區下午19:00的資料</strong></h4>
+
+<p>
+
+<pre class = 'prettyprint lang-r'># 篩選出信義區早上7:00與大安區下午19:00的資料
+data_ubike %&gt;% 
+  select(hour, sarea, sna, avg.sbi) %&gt;% 
+  filter(sarea == &quot;信義區&quot; &amp; hour == 7)
+
+data_ubike %&gt;% 
+  select(hour, sarea, sna, avg.sbi) %&gt;% 
+  filter(sarea == &quot;大安區&quot; &amp; hour == 19)</pre>
+
+</article></slide><slide class=''><hgroup><h2>Data-Manipulation：dplyr (Cont.)</h2></hgroup><article  id="data-manipulationdplyr-cont.-11">
+
+<h4><strong>再來，我們要篩選出信義區早上7:00與大安區下午19:00的資料(Cont.)</strong></h4>
+
+<p>
+
+<pre >  hour  sarea                   sna avg.sbi
+1    7 信義區 捷運市政府站(3號出口) 125.200
+2    7 信義區            台北市政府   7.367
+3    7 信義區              市民廣場   8.100
+4    7 信義區              興雅國中  11.067
+5    7 信義區              世貿二館   6.600
+6    7 信義區     信義廣場(台北101)   9.433</pre>
+
+<pre >  hour  sarea                       sna avg.sbi
+1   19 大安區 捷運國父紀念館站(2號出口)  13.780
+2   19 大安區            捷運科技大樓站  13.831
+3   19 大安區              信義建國路口   4.424
+4   19 大安區              金山愛國路口  22.983
+5   19 大安區              基隆長興路口  15.667
+6   19 大安區              辛亥新生路口  10.746</pre>
+
+</article></slide><slide class=''><hgroup><h2>Data-Manipulation：dplyr (Cont.)</h2></hgroup><article  id="data-manipulationdplyr-cont.-12">
+
+<h4><strong>slice</strong></h4>
+
+<p>
+
+<p><img src='img/slice.png' style='height: 400px'></img></p>
+
+</article></slide><slide class=''><hgroup><h2>Data-Manipulation：dplyr (Cont.)</h2></hgroup><article  id="data-manipulationdplyr-cont.-13">
+
+<h4><strong>把剛剛的資料擷取前面六筆看看吧！</strong></h4>
+
+<p>
+
+<pre class = 'prettyprint lang-r'># 擷取信義區早上7:00的資料前六筆
+data_ubike %&gt;% 
+  select(hour, sarea, sna, avg.sbi) %&gt;% 
+  filter(sarea == &quot;信義區&quot; &amp; hour == 7) %&gt;% 
+  slice(1:6)</pre>
+
+<pre >  hour  sarea                   sna avg.sbi
+1    7 信義區 捷運市政府站(3號出口) 125.200
+2    7 信義區            台北市政府   7.367
+3    7 信義區              市民廣場   8.100
+4    7 信義區              興雅國中  11.067
+5    7 信義區              世貿二館   6.600
+6    7 信義區     信義廣場(台北101)   9.433</pre>
+
+</article></slide><slide class=''><hgroup><h2>Data-Manipulation：dplyr (Cont.)</h2></hgroup><article  id="data-manipulationdplyr-cont.-14">
+
+<h4><strong>mutate</strong></h4>
+
+<p>
+
+<p><img src='img/mutate.png' style='height: 400px'></img></p>
+
+</article></slide><slide class=''><hgroup><h2>Data-Manipulation：dplyr (Cont.)</h2></hgroup><article  id="data-manipulationdplyr-cont.-15">
+
+<h4><strong>將平均車輛數無條件捨去至個位數，直接更新原始欄位</strong></h4>
+
+<p>
+
+<pre class = 'prettyprint lang-r'>data_ubike %&gt;% 
+  select(hour, sarea, sna, avg.sbi) %&gt;% 
+  filter(sarea == &quot;信義區&quot; &amp; hour == 7) %&gt;% 
+  mutate(avg.sbi = floor(avg.sbi))
+
+data_ubike %&gt;% 
+  select(hour, sarea, sna, avg.sbi) %&gt;% 
+  filter(sarea == &quot;大安區&quot; &amp; hour == 19) %&gt;% 
+  mutate(avg.sbi = floor(avg.sbi))</pre>
+
+</article></slide><slide class=''><hgroup><h2>Data-Manipulation：dplyr (Cont.)</h2></hgroup><article  id="data-manipulationdplyr-cont.-16">
+
+<h4><strong>將平均車輛數無條件捨去至個位數，直接更新原始欄位(Cont.)</strong></h4>
+
+<p>
+
+<pre >  hour  sarea                   sna avg.sbi
+1    7 信義區 捷運市政府站(3號出口)     125
+2    7 信義區            台北市政府       7
+3    7 信義區              市民廣場       8
+4    7 信義區              興雅國中      11
+5    7 信義區              世貿二館       6
+6    7 信義區     信義廣場(台北101)       9</pre>
+
+<pre >  hour  sarea                       sna avg.sbi
+1   19 大安區 捷運國父紀念館站(2號出口)      13
+2   19 大安區            捷運科技大樓站      13
+3   19 大安區              信義建國路口       4
+4   19 大安區              金山愛國路口      22
+5   19 大安區              基隆長興路口      15
+6   19 大安區              辛亥新生路口      10</pre>
+
+</article></slide><slide class=''><hgroup><h2>Data-Manipulation：dplyr (Cont.)</h2></hgroup><article  id="data-manipulationdplyr-cont.-17">
+
+<h4><strong>group_by</strong></h4>
+
+<p>
+
+<p><img src='img/group_by.png' style='height: 400px'></img></p>
+
+</article></slide><slide class=''><hgroup><h2>Data-Manipulation：dplyr (Cont.)</h2></hgroup><article  id="data-manipulationdplyr-cont.-18">
+
+<h4><strong>group_by + summarise</strong></h4>
+
+<p>
+
+<p><img src='img/summarise.png' style='height: 300px'></img></p>
+
+</article></slide><slide class=''><hgroup><h2>Data-Manipulation：dplyr (Cont.)</h2></hgroup><article  id="data-manipulationdplyr-cont.-19">
+
+<h4><strong>1. 計算信義區早上7:00各站點的平均車輛數</strong></h4>
+
+<h4><strong>2. 計算大安區晚上19:00各站點的平均車輛數</strong></h4>
+
+<p>
+
+<pre class = 'prettyprint lang-r'>data_ubike %&gt;% 
+  select(hour, sarea, sna, avg.sbi) %&gt;% 
+  filter(sarea == &quot;信義區&quot; &amp; hour == 7) %&gt;% 
+  mutate(avg.sbi = floor(avg.sbi)) %&gt;% 
+  group_by(hour, sarea, sna) %&gt;% 
+  summarise(avg = mean(avg.sbi, na.rm = T) %&gt;% round())
+
+data_ubike %&gt;% 
+  select(hour, sarea, sna, avg.sbi) %&gt;% 
+  filter(sarea == &quot;大安區&quot; &amp; hour == 19) %&gt;% 
+  mutate(avg.sbi = floor(avg.sbi)) %&gt;% 
+  group_by(hour, sarea, sna) %&gt;% 
+  summarise(avg = mean(avg.sbi, na.rm = T) %&gt;% round())</pre>
+
+</article></slide><slide class=''><hgroup><h2>Data-Manipulation：dplyr (Cont.)</h2></hgroup><article  id="data-manipulationdplyr-cont.-20">
+
+<h4><strong>1. 計算信義區早上7:00各站點的平均車輛數(Cont.)</strong></h4>
+
+<h4><strong>2. 計算大安區晚上19:00各站點的平均車輛數(Cont.)</strong></h4>
+
+<p>
+
+<pre >Source: local data frame [6 x 4]
+Groups: hour, sarea [1]
+
+   hour  sarea                   sna   avg
+  (int)  (chr)                 (chr) (dbl)
+1     7 信義區              福德公園    42
+2     7 信義區          基隆光復路口     5
+3     7 信義區 捷運市政府站(3號出口)   116
+4     7 信義區    捷運台北101/世貿站    23
+5     7 信義區            捷運象山站    27
+6     7 信義區   捷運永春站(2號出口)     7</pre>
+
+</article></slide><slide class=''><hgroup><h2>Data-Manipulation：dplyr (Cont.)</h2></hgroup><article  id="data-manipulationdplyr-cont.-21">
+
+<h4><strong>1. 計算信義區早上7:00各站點的平均車輛數(Cont.)</strong></h4>
+
+<h4><strong>2. 計算大安區晚上19:00各站點的平均車輛數(Cont.)</strong></h4>
+
+<p>
+
+<pre >Source: local data frame [6 x 4]
+Groups: hour, sarea [1]
+
+   hour  sarea                sna   avg
+  (int)  (chr)              (chr) (dbl)
+1    19 大安區           成功國宅     9
+2    19 大安區       敦化基隆路口     5
+3    19 大安區       基隆長興路口     5
+4    19 大安區       建國和平路口    10
+5    19 大安區 捷運大安森林公園站    14
+6    19 大安區         捷運大安站     6</pre>
+
+</article></slide><slide class=''><hgroup><h2>Data-Manipulation：dplyr (Cont.)</h2></hgroup><article  id="data-manipulationdplyr-cont.-22">
+
+<h4><strong>arrange</strong></h4>
+
+<p>
+
+<p><img src='img/arrange.png' style='height: 400px'></img></p>
+
+</article></slide><slide class=''><hgroup><h2>Data-Manipulation：dplyr (Cont.)</h2></hgroup><article  id="data-manipulationdplyr-cont.-23">
+
+<h4><strong>將平均車輛數由大到小排序，看看哪個站點的車子最多吧！</strong></h4>
+
+<p>
+
+<pre class = 'prettyprint lang-r'># 信義區
+data_ubike %&gt;% 
+  select(hour, sarea, sna, avg.sbi) %&gt;% 
+  filter(sarea == &quot;信義區&quot; &amp; hour == 7) %&gt;% 
+  mutate(avg.sbi = floor(avg.sbi)) %&gt;% 
+  group_by(hour, sarea, sna) %&gt;% 
+  summarise(avg = mean(avg.sbi, na.rm = T) %&gt;% round()) %&gt;% 
+  arrange(avg %&gt;% desc())
+  
+# 大安區
+data_ubike %&gt;% 
+  select(hour, sarea, sna, avg.sbi) %&gt;% 
+  filter(sarea == &quot;大安區&quot; &amp; hour == 19) %&gt;% 
+  mutate(avg.sbi = floor(avg.sbi)) %&gt;% 
+  group_by(hour, sarea, sna) %&gt;% 
+  summarise(avg = mean(avg.sbi, na.rm = T) %&gt;% round()) %&gt;% 
+  arrange(avg %&gt;% desc())</pre>
+
+</article></slide><slide class=''><hgroup><h2>Data-Manipulation：dplyr (Cont.)</h2></hgroup><article  id="data-manipulationdplyr-cont.-24">
+
+<h4><strong>將平均車輛數由大到小排序，看看哪個站點的車子最多吧！(Cont.)</strong></h4>
+
+<p>
+
+<pre >Source: local data frame [6 x 4]
+Groups: hour, sarea [1]
+
+   hour  sarea                   sna   avg
+  (int)  (chr)                 (chr) (dbl)
+1     7 信義區 捷運市政府站(3號出口)   116
+2     7 信義區              福德公園    42
+3     7 信義區          吳興公車總站    28
+4     7 信義區            捷運象山站    27
+5     7 信義區                三張犁    24
+6     7 信義區    台北市災害應變中心    24</pre>
+
+</article></slide><slide class=''><hgroup><h2>Data-Manipulation：dplyr (Cont.)</h2></hgroup><article  id="data-manipulationdplyr-cont.-25">
+
+<h4><strong>將平均車輛數由大到小排序，看看哪個站點的車子最多吧！(Cont.)</strong></h4>
+
+<p>
+
+<pre >Source: local data frame [6 x 4]
+Groups: hour, sarea [1]
+
+   hour  sarea                     sna   avg
+  (int)  (chr)                   (chr) (dbl)
+1    19 大安區        羅斯福新生南路口    61
+2    19 大安區       捷運麟光站2號出口    29
+3    19 大安區                龍門廣場    23
+4    19 大安區     捷運東門站(4號出口)    19
+5    19 大安區          捷運科技大樓站    19
+6    19 大安區 捷運忠孝復興站(2號出口)    19</pre>
+
+</article></slide><slide class=''><hgroup><h2>Practice Time!!</h2></hgroup><article  id="practice-time">
+
+<h4><strong>現學現賣 Part1！</strong></h4>
+
+<p>
+
+<p>剛剛大家已經算出兩個地區兩個時段車輛最多的站點了，由於停車找不到空車位也是很囧的一件事！現在請大家幫 GU 找出<code>大安區早上8:00</code>與<code>信義區下午20:00</code>空位數最多的場站吧！</p>
+
+<pre >Source: local data frame [6 x 4]
+Groups: hour, sarea [1]
+
+   hour  sarea                sna   avg
+  (int)  (chr)              (chr) (dbl)
+1     8 大安區   羅斯福新生南路口    57
+2     8 大安區       基隆長興路口    48
+3     8 大安區 捷運大安森林公園站    47
+4     8 大安區       臺大資訊大樓    45
+5     8 大安區         捷運大安站    41
+6     8 大安區  捷運麟光站2號出口    40</pre>
+
+</article></slide><slide class=''><hgroup><h2>Practice Time!!</h2></hgroup><article  id="practice-time-1">
+
+<h4><strong>現學現賣 Part1！</strong></h4>
+
+<p>
+
+<p>剛剛大家已經算出兩個地區兩個時段車輛最多的站點了，由於停車找不到空車位也是很囧的一件事！現在請大家幫 GU 找出<code>大安區早上8:00</code>與<code>信義區下午20:00</code>空位數最多的場站吧！</p>
+
+<pre >Source: local data frame [6 x 4]
+Groups: hour, sarea [1]
+
+   hour  sarea                   sna   avg
+  (int)  (chr)                 (chr) (dbl)
+1    20 信義區 捷運市政府站(3號出口)   151
+2    20 信義區     信義廣場(台北101)    74
+3    20 信義區              世貿二館    72
+4    20 信義區              興雅國中    54
+5    20 信義區                三張犁    53
+6    20 信義區              世貿三館    48</pre>
+
+</article></slide><slide class=''><hgroup><h2>Practice Time!!</h2></hgroup><article  id="practice-time-2">
+
+<h4><strong>現學現賣 Part2！</strong></h4>
+
+<p>
+
+<p>
+
+GU 身旁有許多朋友會在晚上的時間後租借 ubike 騎腳踏車運動，但是騎車最怕碰到下雨，所以 GU 想要了解晚上<code>溼度</code>的高低是否會與<code>民眾租借ubike的意願有關聯性</code>？<br/>
+
+<p>
+
+例如：溼度高可能意味者降雨機率也高，會不會使得民眾使用ubike的意願降低？<br/>&#8211;&gt; 觀察<code>濕度</code>與<code>平均空位數</code>的相關係數
+
+<p>
+
+<p><strong>Hint：cor()為計算<code>兩向量相關係數</code>的函數</strong></p>
+
+</article></slide><slide class=''><hgroup><h2>Practice Time!!</h2></hgroup><article  id="practice-time-3">
+
+<h4><strong>現學現賣 Part2！(Cont.)</strong></h4>
+
+<p>
+
+<pre class = 'prettyprint lang-r'># 挑選欄位：時間、平均空位數、濕度
+# 篩選時間介於18:00-24:00間的資料
+# 將平均空位數欄位無條件捨去到個位數後，將新資料表assign至新變數中
+
+data_ubike %&gt;% 
+  select(hour, avg.bemp, humidity) %&gt;% 
+  filter(hour &lt;= 24 &amp; hour &gt;= 18) %&gt;% 
+  mutate(avg.bemp = floor(avg.bemp)) -&gt; data_ubike_part2
+
+# 觀察平均空位數與濕度間的相關係數
+cor(data_ubike_part2$avg.bemp, data_ubike_part2$humidity)</pre>
+
+<pre >[1] 0.00709804</pre>
+
+</article></slide><slide class=''><hgroup><h2>Data-Manipulation：dplyr (Cont.)</h2></hgroup><article  id="data-manipulationdplyr-cont.-26">
+
+<h4><strong>bind family：bind_rows</strong></h4>
+
+<p>
+
+<p><img src='img/bind_rows.png' style='height: 280px'></img></p>
+
+</article></slide><slide class=''><hgroup><h2>Data-Manipulation：dplyr (Cont.)</h2></hgroup><article  id="data-manipulationdplyr-cont.-27">
+
+<h4><strong>bind family：bind_cols</strong></h4>
+
+<p>
+
+<p><img src='img/bind_cols.png' style='height: 350px'></img></p>
+
+</article></slide><slide class=''><hgroup><h2>Data-Manipulation：dplyr (Cont.)</h2></hgroup><article  id="data-manipulationdplyr-cont.-28">
+
+<h4><strong>直接來點例子吧！</strong></h4>
+
+<p>
+
+<ul>
+<li>將剛剛計算出來<code>各個站點平均車輛數的data</code>以<code>行政區個別存入變數</code>，並將兩個資料集<code>以列合併</code></li>
+</ul>
+
+<pre class = 'prettyprint lang-r'># 信義區
+data_ubike %&gt;% 
+  select(hour, sarea, sna, avg.sbi) %&gt;% 
+  filter(sarea == &quot;信義區&quot; &amp; hour == 7) %&gt;% 
+  mutate(avg.sbi = floor(avg.sbi)) %&gt;% 
+  group_by(hour, sarea, sna) %&gt;% 
+  summarise(avg = mean(avg.sbi, na.rm = T) %&gt;% round()) %&gt;% 
+  arrange(avg %&gt;% desc()) -&gt; Xinyi</pre>
+
+</article></slide><slide class=''><hgroup><h2>Data-Manipulation：dplyr (Cont.)</h2></hgroup><article  id="data-manipulationdplyr-cont.-29">
+
+<h4><strong>直接來點例子吧！(Cont.)</strong></h4>
+
+<p>
+
+<ul>
+<li>將剛剛計算出來<code>各個站點平均車輛數的data</code>以<code>行政區個別存入變數</code>，並將兩個資料集<code>以列合併</code></li>
+</ul>
+
+<pre class = 'prettyprint lang-r'># 大安區
+data_ubike %&gt;% 
+  select(hour, sarea, sna, avg.sbi) %&gt;% 
+  filter(sarea == &quot;大安區&quot; &amp; hour == 19) %&gt;% 
+  mutate(avg.sbi = floor(avg.sbi)) %&gt;% 
+  group_by(hour, sarea, sna) %&gt;% 
+  summarise(avg = mean(avg.sbi, na.rm = T) %&gt;% round()) %&gt;% 
+  arrange(avg %&gt;% desc()) -&gt; Daan
+
+# 列合併
+data_bind &lt;- bind_rows(Xinyi, Daan)</pre>
+
+</article></slide><slide class=''><hgroup><h2>Data-Manipulation：dplyr (Cont.)</h2></hgroup><article  id="data-manipulationdplyr-cont.-30">
+
+<h4><strong>直接來點例子吧！(Cont.)</strong></h4>
+
+<p>
+
+<ul>
+<li>將剛剛計算出來<code>各個站點平均車輛數的data</code>以<code>行政區個別存入變數</code>，並將兩個資料集<code>以列合併</code></li>
+</ul>
+
+<pre class = 'prettyprint lang-r'># 檢查維度
+dim(Xinyi)</pre>
+
+<pre >[1] 23  4</pre>
+
+<pre class = 'prettyprint lang-r'>dim(Daan)</pre>
+
+<pre >[1] 30  4</pre>
+
+<pre class = 'prettyprint lang-r'>dim(data_bind)</pre>
+
+<pre >[1] 53  4</pre>
+
+</article></slide><slide class=''><hgroup><h2>Data-Manipulation：dplyr (Cont.)</h2></hgroup><article  id="data-manipulationdplyr-cont.-31">
+
+<h4><strong>先把 join family 的 dataframe 準備好！</strong></h4>
+
+<p>
+
+<pre class = 'prettyprint lang-r'>a &lt;- data.frame(x1 = c(&quot;A&quot;, &quot;B&quot;, &quot;C&quot;, &quot;D&quot;, &quot;E&quot;),
+                x2 = c(1, 2, 3, 4, 5), stringsAsFactors = F)
+
+b &lt;- data.frame(x1 = c(&quot;A&quot;, &quot;C&quot;, &quot;D&quot;, &quot;F&quot;, &quot;G&quot;),
+                x2 = c(12, 15, 11, 18, 16), stringsAsFactors = F)
+
+c &lt;- data.frame(x1 = c(&quot;A&quot;, &quot;C&quot;, &quot;D&quot;, &quot;F&quot;, &quot;G&quot;),
+                x2 = c(1, 3, 4, 8, 9), stringsAsFactors = F)</pre>
+
+</article></slide><slide class=''><hgroup><h2>Data-Manipulation：dplyr (Cont.)</h2></hgroup><article  id="data-manipulationdplyr-cont.-32">
+
+<h4><strong>join family：left_join</strong></h4>
+
+<p>
+
+<pre class = 'prettyprint lang-r'>left_join(a, b, by = &quot;x1&quot;)</pre>
+
+<p><img src='img/left_join.png' style='height: 400px'></img></p>
+
+</article></slide><slide class=''><hgroup><h2>Data-Manipulation：dplyr (Cont.)</h2></hgroup><article  id="data-manipulationdplyr-cont.-33">
+
+<h4><strong>join family：right_join</strong></h4>
+
+<p>
+
+<pre class = 'prettyprint lang-r'>right_join(a, b, by = &quot;x1&quot;)</pre>
+
+<p><img src='img/right_join.png' style='height: 400px'></img></p>
+
+</article></slide><slide class=''><hgroup><h2>Data-Manipulation：dplyr (Cont.)</h2></hgroup><article  id="data-manipulationdplyr-cont.-34">
+
+<h4><strong>join family：inner_join</strong></h4>
+
+<p>
+
+<pre class = 'prettyprint lang-r'>inner_join(a, b, by = &quot;x1&quot;)</pre>
+
+<p><img src='img/inner_join.png' style='height: 400px'></img></p>
+
+</article></slide><slide class=''><hgroup><h2>Data-Manipulation：dplyr (Cont.)</h2></hgroup><article  id="data-manipulationdplyr-cont.-35">
+
+<h4><strong>join family：full_join</strong></h4>
+
+<p>
+
+<pre class = 'prettyprint lang-r'>full_join(a, b, by = &quot;x1&quot;)</pre>
+
+<p><img src='img/full_join.png' style='height: 400px'></img></p>
+
+</article></slide><slide class=''><hgroup><h2>Data-Manipulation：dplyr (Cont.)</h2></hgroup><article  id="data-manipulationdplyr-cont.-36">
+
+<h4><strong>intersect (交集)</strong></h4>
+
+<p>
+
+<pre class = 'prettyprint lang-r'>intersect(a, c)</pre>
+
+<p><img src='img/intersect.png' style='height: 400px'></img></p>
+
+</article></slide><slide class=''><hgroup><h2>Data-Manipulation：dplyr (Cont.)</h2></hgroup><article  id="data-manipulationdplyr-cont.-37">
+
+<h4><strong>union (聯集)</strong></h4>
+
+<p>
+
+<pre class = 'prettyprint lang-r'>union(a, c)</pre>
+
+<p><img src='img/union.png' style='height: 400px'></img></p>
+
+</article></slide><slide class=''><hgroup><h2>Data-Manipulation：dplyr (Cont.)</h2></hgroup><article  id="data-manipulationdplyr-cont.-38">
+
+<h4><strong>setdiff (差集)</strong></h4>
+
+<p>
+
+<pre class = 'prettyprint lang-r'>setdiff(a, c)</pre>
+
+<p><img src='img/setdiff.png' style='height: 400px'></img></p>
+
+</article></slide><slide class='segue dark nobackground'><hgroup class = 'auto-fadein'><h2>CH02-3 Data-Manipulation：reshape2</h2></hgroup><article  id="ch02-3-data-manipulationreshape2">
+
+</article></slide><slide class=''><hgroup><h2>Data-Manipulation：reshape2</h2></hgroup><article  id="data-manipulationreshape2">
+
+<h4><strong>melt：寬資料轉換為長資料</strong></h4>
+
+<p>
+
+<p>
+
+<h4><strong>cast：長資料轉換為寬資料</strong></h4>
+
+<p>
+
+<ul>
+<li><code>dcast</code>：for data.frame</li>
+<li><code>acast</code>：for vector, matrix and array</li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Data-Manipulation：reshape2(Cont.)</h2></hgroup><article  id="data-manipulationreshape2cont.">
+
+<h4><strong>melt：寬資料轉換為長資料</strong></h4>
+
+<p>
+
+<p>
+
+直接Demo一下！
+
+<p>
+
+<pre class = 'prettyprint lang-r'>data(&quot;WorldPhones&quot;)
+WP &lt;- as.data.frame(WorldPhones)
+WP$year &lt;- rownames(WP)  
+WP.melt &lt;- melt(WP, id.var = &#39;year&#39;)</pre>
+
+</article></slide><slide class=''><hgroup><h2>Data-Manipulation：reshape2(Cont.)</h2></hgroup><article  id="data-manipulationreshape2cont.-1">
+
+<h4><strong>melt：寬資料轉換為長資料(Cont.)</strong></h4>
+
+<p>
+
+<pre >     N.Amer Europe Asia S.Amer Oceania Africa Mid.Amer year
+1951  45939  21574 2876   1815    1646     89      555 1951
+1956  60423  29990 4708   2568    2366   1411      733 1956
+1957  64721  32510 5230   2695    2526   1546      773 1957
+1958  68484  35218 6662   2845    2691   1663      836 1958
+1959  71799  37598 6856   3000    2868   1769      911 1959
+1960  76036  40341 8220   3145    3054   1905     1008 1960</pre>
+
+<pre >  year variable value
+1 1951   N.Amer 45939
+2 1956   N.Amer 60423
+3 1957   N.Amer 64721
+4 1958   N.Amer 68484
+5 1959   N.Amer 71799
+6 1960   N.Amer 76036</pre>
+
+</article></slide><slide class=''><hgroup><h2>Data-Manipulation：reshape2(Cont.)</h2></hgroup><article  id="data-manipulationreshape2cont.-2">
+
+<h4><strong>cast：長資料轉換為寬資料</strong></h4>
+
+<p>
+
+<p>
+
+直接Demo一下！
+
+<p>
+
+<pre class = 'prettyprint lang-r'>WP.cast &lt;- dcast(WP.melt, year ~ variable, value.var=&quot;value&quot;)
+head(WP.melt)
+head(WP.cast)</pre>
+
+</article></slide><slide class=''><hgroup><h2>Data-Manipulation：reshape2(Cont.)</h2></hgroup><article  id="data-manipulationreshape2cont.-3">
+
+<h4><strong>cast：長資料轉換為寬資料(Cont.)</strong></h4>
+
+<p>
+
+<p>
+
+直接Demo一下！
+
+<p>
+
+<pre >  year variable value
+1 1951   N.Amer 45939
+2 1956   N.Amer 60423
+3 1957   N.Amer 64721
+4 1958   N.Amer 68484
+5 1959   N.Amer 71799
+6 1960   N.Amer 76036</pre>
+
+<pre >  year N.Amer Europe Asia S.Amer Oceania Africa Mid.Amer
+1 1951  45939  21574 2876   1815    1646     89      555
+2 1956  60423  29990 4708   2568    2366   1411      733
+3 1957  64721  32510 5230   2695    2526   1546      773
+4 1958  68484  35218 6662   2845    2691   1663      836
+5 1959  71799  37598 6856   3000    2868   1769      911
+6 1960  76036  40341 8220   3145    3054   1905     1008</pre>
+
+</article></slide><slide class=''><hgroup><h2>Practice Time!!</h2></hgroup><article  id="practice-time-4">
+
+<h4><strong>現學現賣！</strong></h4>
+
+<p>
+
+<p>GU 想要知道<code>各縣市</code>在<code>2012年度各醫療層級</code>的<code>護理人員數</code>，拜託各位資料分析師幫幫忙～</p>
+
+</article></slide><slide class=''><hgroup><h2>Answer</h2></hgroup><article  id="answer">
+
+<p>
+
+GU 想要知道<code>各縣市</code>在<code>2012年度各醫療層級</code>的<code>護理人員數</code>，拜託各位資料分析師幫幫忙～
+
+<p>
+
+<pre class = 'prettyprint lang-r'># 先將2012年資料給篩選出來
+# 依照縣市以及醫療層級進行分類，計算各縣市各醫療層級的總護理人員數
+# 將長資料轉換成寬資料
+data_nurse %&gt;% 
+  filter(年度 == 2012) %&gt;% 
+  group_by(縣市, 醫療層級) %&gt;% 
+  summarise(總人數 = sum(人數)) %&gt;% 
+  dcast(縣市 ~ 醫療層級, value.var = &quot;總人數&quot;)</pre>
+
+</article></slide><slide class=''><hgroup><h2>Answer(Cont.)</h2></hgroup><article  id="answercont.">
+
+<p>
+
+GU 想要知道<code>各縣市</code>在<code>2012年度各醫療層級</code>的<code>護理人員數</code>，拜託各位資料分析師幫幫忙～
+
+<p>
+
+<p><img src='img/widedata.png' style='height: 400px'></img></p>
+
+</article></slide><slide class='segue dark nobackground'><hgroup class = 'auto-fadein'><h2>你以為這樣就結束了嗎？</h2></hgroup><article >
+
+</article></slide><slide class=''><hgroup><h2>大魔王來了！</h2></hgroup><article >
+
+<h4><strong>挑戰整理明天的電力資料(Case Study)！</strong></h4>
+
+<p>
+
+<p>進階資料整形，若時間允許我會帶著大家做一遍！靜待課堂上由我慢慢解釋：）</p>
+
+</article></slide><slide class='segue dark nobackground'><hgroup class = 'auto-fadein'><h2>下一步要做什麼？</h2></hgroup><article >
+
+</article></slide><slide class=''><hgroup><h2>資料視覺化很重要！</h2></hgroup><article >
+
+<h4><strong>為什麼要將清理、整理完的資料視覺化？</strong></h4>
+
+<p>
+
+<ul>
+<li>R 有很強大的<code>資料視覺化</code>功能</li>
+<li>將資料視覺化可以讓<code>普羅大眾更直觀地了解你的分析結果</code></li>
+<li>不免俗的就是很<code>炫</code>啊！！！</li>
+<li>視覺化可以從另一個角度讓你挖掘資料中潛在的訊息</li>
+<li>etc.
+
+<p>
+
+<p>
+
+<strong><code>下午我們會有請本團隊的資料視覺化達人--崇甫，來為大家介紹這一部份：）</code></strong></li>
+</ul>
+
+</article></slide><slide class='segue dark nobackground'><hgroup class = 'auto-fadein'><h2>Thanks for your listening again :)</h2></hgroup><article  id="thanks-for-your-listening-again"></article></slide>
+
+
+  <slide class="backdrop"></slide>
+
+</slides>
+
+<script src="RDataEngineerforDSPcamp_files/ioslides-13.5.1/js/modernizr.custom.45394.js"></script>
+<script src="RDataEngineerforDSPcamp_files/ioslides-13.5.1/js/prettify/prettify.js"></script>
+<script src="RDataEngineerforDSPcamp_files/ioslides-13.5.1/js/prettify/lang-r.js"></script>
+<script src="RDataEngineerforDSPcamp_files/ioslides-13.5.1/js/prettify/lang-yaml.js"></script>
+<script src="RDataEngineerforDSPcamp_files/ioslides-13.5.1/js/hammer.js"></script>
+<script src="RDataEngineerforDSPcamp_files/ioslides-13.5.1/js/slide-controller.js"></script>
+<script src="RDataEngineerforDSPcamp_files/ioslides-13.5.1/js/slide-deck.js"></script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+<!-- map slide visiblity events into shiny -->
+<script>
+  (function() {
+    if (window.jQuery) {
+       window.jQuery(document).on('slideleave', function(e) {
+         window.jQuery(e.target).trigger('hidden');
+      });
+       window.jQuery(document).on('slideenter', function(e) {
+         window.jQuery(e.target).trigger('shown');
+      });
+    }
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>R Language 環境設定</title>
+
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <meta name="generator" content="pandoc" />
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <link rel="stylesheet" media="all" href="R環境設定_files/ioslides-13.5.1/fonts/fonts.css">
+
+  <link rel="stylesheet" media="all" href="R環境設定_files/ioslides-13.5.1/theme/css/default.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="R環境設定_files/ioslides-13.5.1/theme/css/phone.css">
+
+  <base target="_blank">
+
+  <script type="text/javascript">
+    var SLIDE_CONFIG = {
+      // Slide settings
+      settings: {
+                title: 'R Language 環境設定',
+                        useBuilds: true,
+        usePrettify: true,
+        enableSlideAreas: true,
+        enableTouch: true,
+                      },
+
+      // Author information
+      presenters: [
+            {
+        name:  'GU Chen (Source from Ning Chen)' ,
+        company: '',
+        gplus: '',
+        twitter: '',
+        www: '',
+        github: ''
+      },
+            ]
+    };
+  </script>
+
+  <style type="text/css">
+
+    b, strong {
+      font-weight: bold;
+    }
+
+    em {
+      font-style: italic;
+    }
+
+    slides > slide {
+      -webkit-transition: all 0.4s ease-in-out;
+      -moz-transition: all 0.4s ease-in-out;
+      -o-transition: all 0.4s ease-in-out;
+      transition: all 0.4s ease-in-out;
+    }
+
+    .auto-fadein {
+      -webkit-transition: opacity 0.6s ease-in;
+      -webkit-transition-delay: 0.4s;
+      -moz-transition: opacity 0.6s ease-in 0.4s;
+      -o-transition: opacity 0.6s ease-in 0.4s;
+      transition: opacity 0.6s ease-in 0.4s;
+      opacity: 0;
+    }
+
+  </style>
+
+  <link rel="stylesheet" href="css/dsp.css" type="text/css" />
+
+
+</head>
+
+<body style="opacity: 0">
+
+<slides class="layout-widescreen">
+
+  <slide class="title-slide segue nobackground">
+        <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+    <hgroup class="auto-fadein">
+      <h1 data-config-title><!-- populated from slide_config.json --></h1>
+      <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
+      <p data-config-presenter><!-- populated from slide_config.json --></p>
+            <p style="margin-top: 6px; margin-left: -2px;">2016年6月28日</p>
+          </hgroup>
+  </slide>
+
+<slide class='segue dark nobackground'><hgroup class = 'auto-fadein'><h2>工欲善其事，必先利其器</h2></hgroup><article >
+
+</article></slide><slide class=''><hgroup><h2>建立 R 的使用環境</h2></hgroup><article  id="-r-" class="columns-2">
+
+<h3>環境安裝</h3>
+
+<ul>
+<li>主程式：<a href='https://www.r-project.org/' title=''>R</a>（R-3.2.5 以上版本，最新版本為 R-3.3.0）</li>
+<li>編輯界面：<a href='https://www.rstudio.com/products/rstudio/' title=''>RStudio IDE</a>（0.98.1103 以上版本）</li>
+<li><a href='https://github.com/dspim/R/wiki/R-&amp;-RStudio-Troubleshooting-Guide' title=''>疑難排解指南</a><br/><br> <strong>記得先安裝 R 再安裝 RStudio 噢！</strong> <br> <br></li>
+</ul>
+
+<h3>RStudio 界面說明</h3>
+
+<ul>
+<li>程式碼編輯區</li>
+<li>命令列區</li>
+<li>環境資訊區</li>
+<li>檔案系統區</li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>熟悉 RStudio 的 <strong>命令列</strong> 界面</h2></hgroup><article  id="-rstudio---">
+
+<h3>程式<strong>輸入</strong>、<strong>輸出</strong>、<strong>中斷</strong></h3>
+
+<ul>
+<li>當符號為 <code>&gt;</code> 表示可以輸入指令</li>
+<li>輸入 <code>1 + 1</code> 後按下 <strong>Enter</strong>，檢查螢幕輸出</li>
+<li>輸入 <code>1 +</code> 後按下 <strong>Enter</strong>，檢查螢幕輸出 <br> 最左下角的開頭變成 <code>+</code> 表示指令尚未輸入完成，應繼續輸入</li>
+<li>按下 <strong>ESC</strong>，會中斷執行中的程式 (左下角回復成 <code>&gt;</code> 開頭)</li>
+<li>快捷鍵成癮者請進：<a href='https://support.rstudio.com/hc/en-us/articles/200711853-Keyboard-Shortcuts' title=''>Keyboard Shortcuts</a></li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>熟悉 RStudio 的 <strong>程式碼編輯</strong> 界面</h2></hgroup><article  id="-rstudio---">
+
+<h3>停留時間最多的區域</h3>
+
+<ul>
+<li>開啟 Script：<br> <strong>New File -&gt; R Script -&gt; Untiled1.R</strong></li>
+<li>欲執行程式碼請大膽按下：<br> <strong>Control + Enter</strong> (Windows) or <strong>Command + Enter</strong> (Mac)</li>
+<li>在程式碼編輯區中輸入 <code>1 + 1</code> 後 <br> 按下 <strong>Control + Enter</strong> or <strong>Command + Enter</strong>，檢查命令列區</li>
+<li>在程式碼編輯區中輸入 <code>1 +</code> 後 <br> 按下 <strong>Control + Enter</strong> or <strong>Command + Enter</strong>，檢查命令列區</li>
+<li>在命令列區按下 <strong>ESC</strong> 中斷程式</li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>預設你的位置與原始編碼</h2></hgroup><article >
+
+<p><img src='img/Location.png' style='height: 500px'></img></p>
+
+</article></slide><slide class=''><hgroup><h2>調整字型大小</h2></hgroup><article >
+
+<p><img src='img/Font.png' style='height: 500px'></img></p></article></slide>
+
+
+  <slide class="backdrop"></slide>
+
+</slides>
+
+<script src="R環境設定_files/ioslides-13.5.1/js/modernizr.custom.45394.js"></script>
+<script src="R環境設定_files/ioslides-13.5.1/js/prettify/prettify.js"></script>
+<script src="R環境設定_files/ioslides-13.5.1/js/prettify/lang-r.js"></script>
+<script src="R環境設定_files/ioslides-13.5.1/js/prettify/lang-yaml.js"></script>
+<script src="R環境設定_files/ioslides-13.5.1/js/hammer.js"></script>
+<script src="R環境設定_files/ioslides-13.5.1/js/slide-controller.js"></script>
+<script src="R環境設定_files/ioslides-13.5.1/js/slide-deck.js"></script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+<!-- map slide visiblity events into shiny -->
+<script>
+  (function() {
+    if (window.jQuery) {
+       window.jQuery(document).on('slideleave', function(e) {
+         window.jQuery(e.target).trigger('hidden');
+      });
+       window.jQuery(document).on('slideenter', function(e) {
+         window.jQuery(e.target).trigger('shown');
+      });
+    }
+  })();
+</script>
+
+</body>
+</html>

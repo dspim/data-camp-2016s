@@ -1,0 +1,1734 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>R Basic Learning</title>
+
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <meta name="generator" content="pandoc" />
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <link rel="stylesheet" media="all" href="RBasicforDSPcamp_files/ioslides-13.5.1/fonts/fonts.css">
+
+  <link rel="stylesheet" media="all" href="RBasicforDSPcamp_files/ioslides-13.5.1/theme/css/default.css">
+  <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="RBasicforDSPcamp_files/ioslides-13.5.1/theme/css/phone.css">
+
+  <base target="_blank">
+
+  <script type="text/javascript">
+    var SLIDE_CONFIG = {
+      // Slide settings
+      settings: {
+                title: 'R Basic Learning',
+                        useBuilds: true,
+        usePrettify: true,
+        enableSlideAreas: true,
+        enableTouch: true,
+                      },
+
+      // Author information
+      presenters: [
+            {
+        name:  'GU Chen (Source from Rafe C. H. Liu, Ning Chen, Wush Wu)' ,
+        company: '',
+        gplus: '',
+        twitter: '',
+        www: '',
+        github: ''
+      },
+            ]
+    };
+  </script>
+
+  <style type="text/css">
+
+    b, strong {
+      font-weight: bold;
+    }
+
+    em {
+      font-style: italic;
+    }
+
+    slides > slide {
+      -webkit-transition: all 0.4s ease-in-out;
+      -moz-transition: all 0.4s ease-in-out;
+      -o-transition: all 0.4s ease-in-out;
+      transition: all 0.4s ease-in-out;
+    }
+
+    .auto-fadein {
+      -webkit-transition: opacity 0.6s ease-in;
+      -webkit-transition-delay: 0.4s;
+      -moz-transition: opacity 0.6s ease-in 0.4s;
+      -o-transition: opacity 0.6s ease-in 0.4s;
+      transition: opacity 0.6s ease-in 0.4s;
+      opacity: 0;
+    }
+
+  </style>
+
+  <link rel="stylesheet" href="css/dsp.css" type="text/css" />
+
+
+</head>
+
+<body style="opacity: 0">
+
+<slides class="layout-widescreen">
+
+  <slide class="title-slide segue nobackground">
+        <!-- The content of this hgroup is replaced programmatically through the slide_config.json. -->
+    <hgroup class="auto-fadein">
+      <h1 data-config-title><!-- populated from slide_config.json --></h1>
+      <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
+      <p data-config-presenter><!-- populated from slide_config.json --></p>
+            <p style="margin-top: 6px; margin-left: -2px;">2016年6月28日</p>
+          </hgroup>
+  </slide>
+
+<slide class=''><hgroup><h2>Who is GU?</h2></hgroup><article  id="who-is-gu">
+
+<div style='float:left;width:48%;'>
+
+<p><strong>國立政治大學統計研究所碩二</strong></p>
+
+<h4><strong>Experience</strong></h4>
+
+<p>
+
+<ul>
+<li>玉山金控資料探勘實習生(2015.1-2015.2)</li>
+<li>HTC Data Insight Management Summer Intern(2015.7-2015.8)</li>
+<li>全國大專院校商業個案大賽(ATCC) IBM組企業第三名</li>
+<li>R 軟體翻轉教室教學助教</li>
+<li>健保資料庫分析團隊
+
+</div></li>
+</ul>
+
+<div style='float:left;width:48%;'>
+
+<h4><strong>Skills</strong></h4>
+
+<p>
+
+<ul>
+<li>R、SQL、SAS</li>
+</ul>
+
+<img src='img/GU.jpg' style='height: 350px'></img>
+
+</div>
+
+</article></slide><slide class='segue dark nobackground'><hgroup class = 'auto-fadein'><h2>歡迎進入 R 的世界</h2></hgroup><article  id="-r-">
+
+</article></slide><slide class=''><hgroup><h2>Agenda</h2></hgroup><article  id="agenda">
+
+<ul style="font-size: 120%">
+
+<li>
+
+Introduction to R Language
+
+</li>
+
+<li>
+
+Vectors
+
+</li>
+
+<li>
+
+Factors
+
+</li>
+
+<li>
+
+List-DataFrame
+
+</li>
+
+<li>
+
+Read Data in R &amp; Write Data out R
+
+</li>
+
+</ul>
+
+</article></slide><slide class='segue dark nobackground'><hgroup class = 'auto-fadein'><h2>Ch01 Introduction to R Language</h2></hgroup><article  id="ch01-introduction-to-r-language">
+
+</article></slide><slide class=''><hgroup><h2>R 是專門為資料分析而設計的程式語言</h2></hgroup><article  id="r-" class="centered">
+
+<img src='img/statician_10521919-655x280.jpg' style='width: 960px'></img>
+
+<h3>
+
+R 可以執行大多數的統計計算、機器學習、資料採礦方法
+
+</h3>
+
+<p>取自 <a href='http://goo.gl/CkXlvY' title=''>http://goo.gl/CkXlvY</a></p>
+
+</article></slide><slide class=''><hgroup><h2>免費、開源、豐沛的社群資源</h2></hgroup><article  class="centered">
+
+<div style="float:left;width:48%;">
+<img src='img/fig_8_cran.png' style='height: 400px'></img>
+
+<h3>
+
+很容易擴充和客製化
+
+</h3>
+
+<p>取自 <a href='http://goo.gl/AwfHLx' title=''>http://goo.gl/AwfHLx</a></p></div>
+
+<div style="float:left;width:48%;">
+<img src='img/r-integration-1.png' style='height: 400px'></img>
+
+<h3>
+
+很容易和其他工具做整合
+
+</h3>
+
+<p>取自 <a href='http://goo.gl/jvNnG3' title=''>http://goo.gl/jvNnG3</a></p></div>
+
+</article></slide><slide class=''><hgroup><h2>R 可以輸出高品質的視覺化</h2></hgroup><article  id="r-" class="centered">
+
+<p><img src='img/flights_sml.jpg' style='width: 960px'></img></p>
+
+<p>取自 <a href='http://goo.gl/q1NX26' title=''>http://goo.gl/q1NX26</a></p>
+
+</article></slide><slide class=''><hgroup><h2>課程目標</h2></hgroup><article >
+
+<ul style="font-size: 120%">
+
+<li>
+
+建立 R 的使用環境(中午已完成！)
+
+</li>
+
+<li>
+
+熟悉 R 語言基礎操作(第一天)
+
+</li>
+
+<li>
+
+了解 R 語言的物件的結構(第一天)
+
+</li>
+
+<li>
+
+學習 R 語言的資料整理(第二天)
+
+</li>
+
+<li>
+
+從無到有，完成探索性資料分析(第二天)
+
+</li>
+
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Introduction to R</h2></hgroup><article  id="introduction-to-r">
+
+<div style='float:left;width:48%;'>
+
+<h4><strong>如何熟悉 R ？</strong></h4>
+
+<p>
+
+<ul>
+<li>搭訕它 &#8211;&gt; 認識它 &#8211;&gt; 攻陷它 <img src='img/TaylorsLoki.png' style='height: 300px'></img><br/>取自 <a href='http://goo.gl/zH8kZX' title=''>http://goo.gl/zH8kZX</a>
+
+</div></li>
+</ul>
+
+<div style='float:left;width:48%;'>
+
+<h4><strong>不怕問問題</strong></h4>
+
+<p>
+
+<ul>
+<li><strong>help or ?</strong>：使用於<code>清楚知道</code>函數名稱時</li>
+<li><strong>??</strong>：使用於<code>不確定</code>確切函數名稱時</li>
+<li>谷歌絕對是妳/你在學 R 的最佳良師</li>
+<li>高手藏在網路的每個角落：<a href='http://stackoverflow.com' title=''>Stack overflow</a>
+
+<p>
+
+<h4><strong>養成寫註解的習慣</strong></h4>
+
+<p></li>
+<li><strong>#</strong>：已於開頭輸入註解符號的該行不會被執行</li>
+<li><strong>大量註解快捷鍵</strong>：ctrl/command + shift + C
+
+</div></li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Introduction to R (Cont.)</h2></hgroup><article  id="introduction-to-r-cont.">
+
+<h4><strong>你的專屬檔案櫃</strong></h4>
+
+<p>
+
+<ul>
+<li><strong>getwd()</strong>：回覆目前的工作目錄(get working directory)</li>
+<li><strong>setwd()</strong>：設定你的工作目錄
+
+<p>
+
+<p>
+
+<code>讀檔的時候會很方便！(晚點上菜讀檔撇步)</code></li>
+</ul>
+
+<h4><strong>想要少抓點蟲？請愛用tab鍵！</strong></h4>
+
+<p>
+
+<p><img src='img/tabs.jpg' style='height: 200px'></img></p>
+
+</article></slide><slide class=''><hgroup><h2>Introduction to R (Cont.)</h2></hgroup><article  id="introduction-to-r-cont.-1">
+
+<h4><strong>穿上裝備的 R 會變得更強大！</strong></h4>
+
+<p>
+
+<p><img src='img/R%20packages.png' style='height: 400px'></img></p>
+
+</article></slide><slide class=''><hgroup><h2>Introduction to R (Cont.)</h2></hgroup><article  id="introduction-to-r-cont.-2">
+
+<h4><strong>利用 code 安裝 R packages</strong></h4>
+
+<p>
+
+<ol>
+<li>安裝packages：
+
+<p>
+
+<p><code>install.packages(&quot;套件名稱&quot;)</code></p></li>
+<li>載入packages：
+
+<p>
+
+<p><code>library(套件名稱)</code></p></li>
+</ol>
+
+</article></slide><slide class=''><hgroup><h2>Introduction to R (Cont.)</h2></hgroup><article  id="introduction-to-r-cont.-3" class="centered">
+
+<h4><strong>利用檔案系統區 安裝 R packages</strong></h4>
+
+<div style="float:left;width:48%;">
+<img src='img/installpack1.png' style='height: 400px'></img>
+
+<h3>
+
+Install your packages
+
+</h3></div>
+
+<div style="float:left;width:48%;">
+<img src='img/installpack2.png' style='height: 400px'></img>
+
+<h3>
+
+Library your packages
+
+</h3></div>
+
+</article></slide><slide class=''><hgroup><h2>Introduction to R (Cont.)</h2></hgroup><article  id="introduction-to-r-cont.-4">
+
+<h4><strong>R 的學習資源與教材</strong></h4>
+
+<p>
+
+<ul>
+<li><a href='http://www.statmethods.net/index.html' title=''>Quick-R</a></li>
+<li><a href='https://cran.r-project.org/doc/contrib/Short-refcard.pdf' title=''>R Reference Card</a></li>
+<li><a href='http://datascienceandr.org' title=''>R 語言翻轉教室</a>
+
+<p>
+
+<h4><strong>推廣 R 的先進們</strong></h4>
+
+<p></li>
+<li><a href='http://dsp.im' title=''>DSP 智庫驅動</a></li>
+<li><a href='http://www.meetup.com/Taiwan-R/' title=''>Taiwan R User Group</a></li>
+<li><a href='https://www.facebook.com/groups/datasci.tw/?fref=ts' title=''>臺灣資料科學愛好者交流區</a></li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Introduction to R (Cont.)</h2></hgroup><article  id="introduction-to-r-cont.-5">
+
+<h4><strong>Expression</strong></h4>
+
+<p>
+
+<ul>
+<li>每一段指令都是一個 expression</li>
+<li>輸入有效的 expression 後，R 會執行並且把結果呈現於 <code>Console</code> 中</li>
+<li>eg1. 1 + 1</li>
+<li>eg2. ?sum</li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Introduction to R (Cont.)</h2></hgroup><article  id="introduction-to-r-cont.-6">
+
+<h4><strong>Assignment</strong></h4>
+
+<p>
+
+<ul>
+<li>一般給 R 的指令不是一個 expression 就是一個 assignment</li>
+<li>物件(object)被 assign 過後，會陳列於 <code>Environment</code> 中</li>
+<li>物件可以是變數、數字、文字、向量、函數或更複雜的東西</li>
+<li>eg1. x &lt;- 1 + 1 (建議寫法)</li>
+<li>eg2. y = c(1,2,3)</li>
+</ul>
+
+</article></slide><slide class='segue dark nobackground'><hgroup class = 'auto-fadein'><h2>Ch02 Vectors</h2></hgroup><article  id="ch02-vectors">
+
+</article></slide><slide class=''><hgroup><h2>Outline of Vectors</h2></hgroup><article  id="outline-of-vectors">
+
+<ul style="font-size: 120%">
+
+<li>
+
+基本介紹
+
+</li>
+
+<li>
+
+向量+向量
+
+</li>
+
+<li>
+
+類別轉換
+
+</li>
+
+<li>
+
+生產工具
+
+</li>
+
+<li>
+
+排序與命名
+
+</li>
+
+<li>
+
+取出指定值
+
+</li>
+
+<li>
+
+取代與新增
+
+</li>
+
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Vectors</h2></hgroup><article  id="vectors">
+
+<h4><strong>基本介紹</strong></h4>
+
+<p>
+
+<ul>
+<li>R 物件最基本的單位是向量(Vectors)，以<code>c()</code>呈現向量，向量中的元素以<code>逗號</code>分隔</li>
+<li>eg. c(1, 2, 3) 為一包含元素1, 2, 3的向量</li>
+</ul>
+
+<h4><strong>向量包含三種類別</strong></h4>
+
+<p>
+
+<ol>
+<li>數值向量(numeric vector)</li>
+<li>字串向量(character vector)</li>
+<li>布林向量(logical vector)</li>
+</ol>
+
+</article></slide><slide class=''><hgroup><h2>Vectors (Cont.)</h2></hgroup><article  id="vectors-cont.">
+
+<pre class = 'prettyprint lang-r'># numeric vector
+(v1 &lt;- c(1, 2, 3, 4, 5))</pre>
+
+<pre >[1] 1 2 3 4 5</pre>
+
+<pre class = 'prettyprint lang-r'># character vector
+(v2 &lt;- c(&quot;臺北市&quot;, &quot;新北市&quot;, &quot;桃園市&quot;, &quot;台中市&quot;, &quot;台南市&quot;,&quot;高雄市&quot;))</pre>
+
+<pre >[1] &quot;臺北市&quot; &quot;新北市&quot; &quot;桃園市&quot; &quot;台中市&quot; &quot;台南市&quot; &quot;高雄市&quot;</pre>
+
+<pre class = 'prettyprint lang-r'># logical vector
+(v3 &lt;- c(TRUE, FALSE, FALSE, TRUE, TRUE))</pre>
+
+<pre >[1]  TRUE FALSE FALSE  TRUE  TRUE</pre>
+
+<pre class = 'prettyprint lang-r'># check the class of vector
+c(class(v1), class(v2), class(v3))</pre>
+
+<pre >[1] &quot;numeric&quot;   &quot;character&quot; &quot;logical&quot;  </pre>
+
+</article></slide><slide class=''><hgroup><h2>Vectors (Cont.)</h2></hgroup><article  id="vectors-cont.-1">
+
+<h4><strong>向量+向量</strong></h4>
+
+<p>
+
+<ul>
+<li>在 R 中，大部份的運算都是向量式的</li>
+<li>當多組向量在進行運算時，會由相對應位置的元素進行運算</li>
+<li>當向量長度不同時，R 會重複較短的向量，補足至與較長向量長度一樣</li>
+</ul>
+
+<p>
+
+<p>
+
+<p>請觀察以下向量運算的程式碼，並且腦海想像一下結果為何？</p>
+
+<pre class = 'prettyprint lang-r'># eg1
+c(1, 2, 3) + c(1, 2, 3)
+# eg2
+1 + c(1, 2, 3)
+# eg3
+c(1, 2) + c(1, 2, 3)
+# eg4
+c(1, 2) + c(1, 2, 3, 4)</pre>
+
+</article></slide><slide class=''><hgroup><h2>Vectors (Cont.)</h2></hgroup><article  id="vectors-cont.-2">
+
+<pre class = 'prettyprint lang-r'># eg1
+c(1, 2, 3) + c(1, 2, 3)</pre>
+
+<pre >[1] 2 4 6</pre>
+
+<pre class = 'prettyprint lang-r'># eg2
+1 + c(1, 2, 3)</pre>
+
+<pre >[1] 2 3 4</pre>
+
+<pre class = 'prettyprint lang-r'># eg3
+c(1, 2) + c(1, 2, 3)</pre>
+
+<pre >Warning in c(1, 2) + c(1, 2, 3): 較長的物件長度並非較短物件長度的倍數</pre>
+
+<pre >[1] 2 4 4</pre>
+
+<pre class = 'prettyprint lang-r'># eg4
+c(1, 2) + c(1, 2, 3, 4)</pre>
+
+<pre >[1] 2 4 4 6</pre>
+
+</article></slide><slide class=''><hgroup><h2>Vectors (Cont.)</h2></hgroup><article  id="vectors-cont.-3">
+
+<h4><strong>類別轉換</strong></h4>
+
+<p>
+
+<ul>
+<li>向量物件一次只能接受一種類別的元素</li>
+<li>若在同一個向量中放入多個類別的元素，R 的轉換順序為<code>字串 &gt; 數值 &gt; 布林值</code></li>
+<li>向量的類別可以利用函數進行轉換(as.numeric(), as.character(), as.logical())</li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Vectors (Cont.)</h2></hgroup><article  id="vectors-cont.-4">
+
+<h4><strong>類別轉換(Cont.)</strong></h4>
+
+<p>
+
+<pre class = 'prettyprint lang-r'># 字串 &gt; 數值
+c(1, 2, &quot;YA&quot;)</pre>
+
+<pre >[1] &quot;1&quot;  &quot;2&quot;  &quot;YA&quot;</pre>
+
+<pre class = 'prettyprint lang-r'># 數值 &gt; 布林值
+c(1, 2, TRUE)</pre>
+
+<pre >[1] 1 2 1</pre>
+
+<pre class = 'prettyprint lang-r'># 字串 &gt; 布林值
+c(&quot;apple&quot;, &quot;banana&quot;, TRUE)</pre>
+
+<pre >[1] &quot;apple&quot;  &quot;banana&quot; &quot;TRUE&quot;  </pre>
+
+</article></slide><slide class=''><hgroup><h2>Vectors (Cont.)</h2></hgroup><article  id="vectors-cont.-5">
+
+<pre class = 'prettyprint lang-r'># 數值向量轉字串向量
+as.character(c(1, 2, 3))</pre>
+
+<pre >[1] &quot;1&quot; &quot;2&quot; &quot;3&quot;</pre>
+
+<pre class = 'prettyprint lang-r'># 布林向量轉數值向量
+as.numeric(c(TRUE, FALSE, TRUE))</pre>
+
+<pre >[1] 1 0 1</pre>
+
+<pre class = 'prettyprint lang-r'># 布林向量轉字串向量
+as.logical(c(TRUE, FALSE, TRUE))</pre>
+
+<pre >[1]  TRUE FALSE  TRUE</pre>
+
+</article></slide><slide class=''><hgroup><h2>Vectors (Cont.)</h2></hgroup><article  id="vectors-cont.-6">
+
+<h4><strong>生產工具</strong></h4>
+
+<p>
+
+<ul>
+<li><code>seq()</code>：可以生成連續整數的向量</li>
+<li><code>rep()</code>：可以重複一個數字或一組序列向量</li>
+</ul>
+
+<p>
+
+<pre class = 'prettyprint lang-r'># 生成數值向量 1, 3, 5, 7, 9
+seq(1, 9, by = 2)</pre>
+
+<pre >[1] 1 3 5 7 9</pre>
+
+<pre class = 'prettyprint lang-r'># 生成數值向量 1, 1, 2, 2, 3, 3
+rep(1:3, each = 2)</pre>
+
+<pre >[1] 1 1 2 2 3 3</pre>
+
+</article></slide><slide class=''><hgroup><h2>Practice Time!!</h2></hgroup><article  id="practice-time">
+
+<h4><strong>請嘗試利用seq與rep生成向量1, 2, 2, 3, 3, 3, 4, 4, 4, 4</strong></h4>
+
+<p>
+
+<p><code>Hint：請善加利用help</code></p>
+
+</article></slide><slide class=''><hgroup><h2>Answer</h2></hgroup><article  id="answer">
+
+<strong>請嘗試利用seq(或：)與rep生成向量1, 2, 2, 3, 3, 3, 4, 4, 4, 4</strong>
+
+<p>
+
+<pre class = 'prettyprint lang-r'>rep(seq(1, 4, by = 1), times = 1:4)</pre>
+
+<pre > [1] 1 2 2 3 3 3 4 4 4 4</pre>
+
+</article></slide><slide class=''><hgroup><h2>Vectors (Cont.)</h2></hgroup><article  id="vectors-cont.-7">
+
+<h4><strong>排序與命名</strong></h4>
+
+<p>
+
+<ul>
+<li><code>sort()</code>：產生一組長度一樣的向量，將向量中的元素由小到大排列</li>
+<li><code>order()</code>：產生一組長度一樣的向量，回傳排序後的元素在原向量的等級</li>
+</ul>
+
+<p>
+
+<pre class = 'prettyprint lang-r'># 將元素由小到大排列
+sort(c(1,5,3,7,10))</pre>
+
+<pre >[1]  1  3  5  7 10</pre>
+
+<pre class = 'prettyprint lang-r'># 回傳排序後的元素在原向量的等級
+order(c(1,5,3,7,10))</pre>
+
+<pre >[1] 1 3 2 4 5</pre>
+
+</article></slide><slide class=''><hgroup><h2>Vectors (Cont.)</h2></hgroup><article  id="vectors-cont.-8">
+
+<h4><strong>排序與命名(Cont.)</strong></h4>
+
+<p>
+
+<ul>
+<li>向量的命名可以幫助自己對向量中元素的解讀</li>
+</ul>
+
+<p>
+
+<pre class = 'prettyprint lang-r'># 向量命名
+score &lt;- c(Allen = &quot;A+&quot;, Joy = &quot;B-&quot;, Paul = &quot;A-&quot;)
+score</pre>
+
+<pre >Allen   Joy  Paul 
+ &quot;A+&quot;  &quot;B-&quot;  &quot;A-&quot; </pre>
+
+</article></slide><slide class=''><hgroup><h2>Vectors (Cont.)</h2></hgroup><article  id="vectors-cont.-9">
+
+<h4><strong>取出指定值</strong></h4>
+
+<p>
+
+<ul>
+<li>可利用[ ]、比較運算子(&gt;, &lt;, &gt;=, &lt;=, ==, !=)、邏輯運算子 (&amp;, |) 以及負號 (-) 進行向量的取值</li>
+<li>R 亦支援利用變數的名稱 (names) 來取值</li>
+</ul>
+
+<p>
+
+<pre class = 'prettyprint lang-r'># 自向量1, 3, 5, ..., 21中，取出小於10的元素
+v4 &lt;- seq(1, 21, by = 2)
+v4[v4 &lt; 10]</pre>
+
+<pre >[1] 1 3 5 7 9</pre>
+
+<pre class = 'prettyprint lang-r'># 利用變數名稱取值
+score &lt;- c(Allen = &quot;A+&quot;, Joy = &quot;B-&quot;, Paul = &quot;A-&quot;)
+score[c(&quot;Joy&quot;, &quot;Paul&quot;)]</pre>
+
+<pre > Joy Paul 
+&quot;B-&quot; &quot;A-&quot; </pre>
+
+</article></slide><slide class=''><hgroup><h2>Vectors (Cont.)</h2></hgroup><article  id="vectors-cont.-10">
+
+<h4><strong>取代與新增</strong></h4>
+
+<p>
+
+<ul>
+<li>利用[ ]進行向量元素的取代與新增</li>
+</ul>
+
+<p>
+
+<pre class = 'prettyprint lang-r'># 自向量1, 3, 5, ..., 21中，取出小於10的元素，並且取代為0
+v4 &lt;- seq(1, 21, by = 2)
+v4[v4 &lt; 10] &lt;- 0
+v4</pre>
+
+<pre > [1]  0  0  0  0  0 11 13 15 17 19 21</pre>
+
+<pre class = 'prettyprint lang-r'># 新增23, 25, ..., 51至原向量x中
+x &lt;- seq(1, 21, by = 2)
+y &lt;- seq(23, 51, by = 2)
+c(x, y)</pre>
+
+<pre > [1]  1  3  5  7  9 11 13 15 17 19 21 23 25 27 29 31 33 35 37 39 41 43 45
+[24] 47 49 51</pre>
+
+</article></slide><slide class=''><hgroup><h2>Practice Time!!</h2></hgroup><article  id="practice-time-1">
+
+<h4><strong>1. 先製造一向量為1, NA, 3, NA, 5, NA, 7, NA, 9, NA</strong></h4>
+
+<p>
+
+<h4><strong>2. 請嘗試填補遺失值，使得向量變為1, 2, 3, 4, 5, 6, 7, 8, 9, 10</strong></h4>
+
+<p>
+
+<h4><strong>Hint：利用is.na()與which()</strong></h4>
+
+</article></slide><slide class=''><hgroup><h2>Answer</h2></hgroup><article  id="answer-1">
+
+<strong>1. 先製造一向量為1, NA, 3, NA, 5, NA, 7, NA, 9, NA</strong>
+
+<p>
+
+<strong>2. 請嘗試填補遺失值，使得向量變為1, 2, 3, 4, 5, 6, 7, 8, 9, 10</strong>
+
+<p>
+
+<pre class = 'prettyprint lang-r'>v_practice &lt;- c(1, NA, 3, NA, 5, NA, 7, NA, 9, NA)
+v_practice[which(is.na(v_practice))] &lt;- seq(2, 10, by = 2)
+v_practice</pre>
+
+<pre > [1]  1  2  3  4  5  6  7  8  9 10</pre>
+
+</article></slide><slide class='segue dark nobackground'><hgroup class = 'auto-fadein'><h2>Ch03 Factors</h2></hgroup><article  id="ch03-factors">
+
+</article></slide><slide class=''><hgroup><h2>Factors</h2></hgroup><article  id="factors">
+
+<h4><strong>Factors物件簡介</strong></h4>
+
+<p>
+
+<ul>
+<li>Factor 是一個向量物件，用來儲存<code>類別型</code>的資料</li>
+<li>我們可以利用 Factor 將資料集依照<code>類別</code>進行<code>分組</code></li>
+<li>Factor 可以是無順序或有順序的資料</li>
+<li>eg. 性別(男、女)、教育程度(高中以下、大學、碩士以上)等</li>
+</ul>
+
+<p>
+
+<pre class = 'prettyprint lang-r'>### iris為150筆鳶尾花資料，是一個非常有名的資料集
+# 其中，Species欄位記錄鳶尾花的種類，是一個 Factor 變數
+# 觀察Species的類別
+head(iris$Species)</pre>
+
+<pre >[1] setosa setosa setosa setosa setosa setosa
+Levels: setosa versicolor virginica</pre>
+
+</article></slide><slide class=''><hgroup><h2>Factors(Cont.)</h2></hgroup><article  id="factorscont.">
+
+<h4><strong>小心！Factor 轉 Numeric</strong></h4>
+
+<ul>
+<li>Factor 向量直接轉換成 Numeric 向量時，呈現的會是原向量元素的等級排名</li>
+<li>若欲將 Factor 向量中的數值元素以 Numeric 向量呈現，需先轉換成 Charactor 向量</li>
+</ul>
+
+<p>
+
+<pre class = 'prettyprint lang-r'># 建立一個factor向量f1
+(f1 &lt;- as.factor(c(20, 40, 50, 30, 10)))</pre>
+
+<pre >[1] 20 40 50 30 10
+Levels: 10 20 30 40 50</pre>
+
+<pre class = 'prettyprint lang-r'># 將factor向量直接轉換成numeric向量
+as.numeric(f1)</pre>
+
+<pre >[1] 2 4 5 3 1</pre>
+
+<pre class = 'prettyprint lang-r'># 若遇轉換成numeric向量，必須先轉換成字串向量再轉換成numeric向量
+as.numeric(as.character(f1))</pre>
+
+<pre >[1] 20 40 50 30 10</pre>
+
+</article></slide><slide class='segue dark nobackground'><hgroup class = 'auto-fadein'><h2>Ch04 List-DataFrame</h2></hgroup><article  id="ch04-list-dataframe">
+
+</article></slide><slide class=''><hgroup><h2>Outline of List-DataFrame</h2></hgroup><article  id="outline-of-list-dataframe">
+
+<ul style="font-size: 110%">
+
+<li>
+
+List
+
+</li>
+
+<ul>
+
+<li>
+
+基本介紹
+
+</li>
+
+<li>
+
+取值
+
+</li>
+
+</ul>
+
+<li>
+
+Dataframe
+
+</li>
+
+<ul>
+
+<li>
+
+基本介紹
+
+</li>
+
+<li>
+
+取值
+
+</li>
+
+<li>
+
+合併
+
+</li>
+
+</ul>
+
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>List</h2></hgroup><article  id="list">
+
+<h4><strong>基本介紹</strong></h4>
+
+<p>
+
+<ul>
+<li>list 是向量的一種</li>
+<li>vector：<code>元素</code>的向量；list：<code>物件</code>的向量</li>
+<li>list 中，<code>每個物件的長度可以不一樣</code></li>
+<li>list 中，<code>每個物件的型態可以不一樣</code> (eg. list, vector, dataframe etc.)</li>
+<li>list 之於<code>檔案櫃</code>，物件之於<code>資料夾</code>，元素之於<code>A4紙</code></li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>List(Cont.)</h2></hgroup><article  id="listcont.">
+
+<h4><strong>直接來點例子吧！</strong></h4>
+
+<p>
+
+<pre class = 'prettyprint lang-r'># 1. 建立一個 list1，包含三位學生的姓名、身高、體重與iris資料集
+list1 &lt;- list(name = c(&quot;GU&quot;, &quot;Alger&quot;, &quot;Sheng&quot;),
+              height = c(160, 180, 170),
+              weight = c(60, 80, 70),
+              iris = iris)
+# 2. 在 Console 輸入 list1 ，看看資料長相吧！
+list1</pre>
+
+<pre >$name
+[1] &quot;GU&quot;    &quot;Alger&quot; &quot;Sheng&quot;
+
+$height
+[1] 160 180 170
+
+$weight
+[1] 60 80 70
+
+$iris
+    Sepal.Length Sepal.Width Petal.Length Petal.Width    Species
+1            5.1         3.5          1.4         0.2     setosa
+2            4.9         3.0          1.4         0.2     setosa
+3            4.7         3.2          1.3         0.2     setosa
+4            4.6         3.1          1.5         0.2     setosa
+5            5.0         3.6          1.4         0.2     setosa
+6            5.4         3.9          1.7         0.4     setosa
+7            4.6         3.4          1.4         0.3     setosa
+8            5.0         3.4          1.5         0.2     setosa
+9            4.4         2.9          1.4         0.2     setosa
+10           4.9         3.1          1.5         0.1     setosa
+11           5.4         3.7          1.5         0.2     setosa
+12           4.8         3.4          1.6         0.2     setosa
+13           4.8         3.0          1.4         0.1     setosa
+14           4.3         3.0          1.1         0.1     setosa
+15           5.8         4.0          1.2         0.2     setosa
+16           5.7         4.4          1.5         0.4     setosa
+17           5.4         3.9          1.3         0.4     setosa
+18           5.1         3.5          1.4         0.3     setosa
+19           5.7         3.8          1.7         0.3     setosa
+20           5.1         3.8          1.5         0.3     setosa
+21           5.4         3.4          1.7         0.2     setosa
+22           5.1         3.7          1.5         0.4     setosa
+23           4.6         3.6          1.0         0.2     setosa
+24           5.1         3.3          1.7         0.5     setosa
+25           4.8         3.4          1.9         0.2     setosa
+26           5.0         3.0          1.6         0.2     setosa
+27           5.0         3.4          1.6         0.4     setosa
+28           5.2         3.5          1.5         0.2     setosa
+29           5.2         3.4          1.4         0.2     setosa
+30           4.7         3.2          1.6         0.2     setosa
+31           4.8         3.1          1.6         0.2     setosa
+32           5.4         3.4          1.5         0.4     setosa
+33           5.2         4.1          1.5         0.1     setosa
+34           5.5         4.2          1.4         0.2     setosa
+35           4.9         3.1          1.5         0.2     setosa
+36           5.0         3.2          1.2         0.2     setosa
+37           5.5         3.5          1.3         0.2     setosa
+38           4.9         3.6          1.4         0.1     setosa
+39           4.4         3.0          1.3         0.2     setosa
+40           5.1         3.4          1.5         0.2     setosa
+41           5.0         3.5          1.3         0.3     setosa
+42           4.5         2.3          1.3         0.3     setosa
+43           4.4         3.2          1.3         0.2     setosa
+44           5.0         3.5          1.6         0.6     setosa
+45           5.1         3.8          1.9         0.4     setosa
+46           4.8         3.0          1.4         0.3     setosa
+47           5.1         3.8          1.6         0.2     setosa
+48           4.6         3.2          1.4         0.2     setosa
+49           5.3         3.7          1.5         0.2     setosa
+50           5.0         3.3          1.4         0.2     setosa
+51           7.0         3.2          4.7         1.4 versicolor
+52           6.4         3.2          4.5         1.5 versicolor
+53           6.9         3.1          4.9         1.5 versicolor
+54           5.5         2.3          4.0         1.3 versicolor
+55           6.5         2.8          4.6         1.5 versicolor
+56           5.7         2.8          4.5         1.3 versicolor
+57           6.3         3.3          4.7         1.6 versicolor
+58           4.9         2.4          3.3         1.0 versicolor
+59           6.6         2.9          4.6         1.3 versicolor
+60           5.2         2.7          3.9         1.4 versicolor
+61           5.0         2.0          3.5         1.0 versicolor
+62           5.9         3.0          4.2         1.5 versicolor
+63           6.0         2.2          4.0         1.0 versicolor
+64           6.1         2.9          4.7         1.4 versicolor
+65           5.6         2.9          3.6         1.3 versicolor
+66           6.7         3.1          4.4         1.4 versicolor
+67           5.6         3.0          4.5         1.5 versicolor
+68           5.8         2.7          4.1         1.0 versicolor
+69           6.2         2.2          4.5         1.5 versicolor
+70           5.6         2.5          3.9         1.1 versicolor
+71           5.9         3.2          4.8         1.8 versicolor
+72           6.1         2.8          4.0         1.3 versicolor
+73           6.3         2.5          4.9         1.5 versicolor
+74           6.1         2.8          4.7         1.2 versicolor
+75           6.4         2.9          4.3         1.3 versicolor
+76           6.6         3.0          4.4         1.4 versicolor
+77           6.8         2.8          4.8         1.4 versicolor
+78           6.7         3.0          5.0         1.7 versicolor
+79           6.0         2.9          4.5         1.5 versicolor
+80           5.7         2.6          3.5         1.0 versicolor
+81           5.5         2.4          3.8         1.1 versicolor
+82           5.5         2.4          3.7         1.0 versicolor
+83           5.8         2.7          3.9         1.2 versicolor
+84           6.0         2.7          5.1         1.6 versicolor
+85           5.4         3.0          4.5         1.5 versicolor
+86           6.0         3.4          4.5         1.6 versicolor
+87           6.7         3.1          4.7         1.5 versicolor
+88           6.3         2.3          4.4         1.3 versicolor
+89           5.6         3.0          4.1         1.3 versicolor
+90           5.5         2.5          4.0         1.3 versicolor
+91           5.5         2.6          4.4         1.2 versicolor
+92           6.1         3.0          4.6         1.4 versicolor
+93           5.8         2.6          4.0         1.2 versicolor
+94           5.0         2.3          3.3         1.0 versicolor
+95           5.6         2.7          4.2         1.3 versicolor
+96           5.7         3.0          4.2         1.2 versicolor
+97           5.7         2.9          4.2         1.3 versicolor
+98           6.2         2.9          4.3         1.3 versicolor
+99           5.1         2.5          3.0         1.1 versicolor
+100          5.7         2.8          4.1         1.3 versicolor
+101          6.3         3.3          6.0         2.5  virginica
+102          5.8         2.7          5.1         1.9  virginica
+103          7.1         3.0          5.9         2.1  virginica
+104          6.3         2.9          5.6         1.8  virginica
+105          6.5         3.0          5.8         2.2  virginica
+106          7.6         3.0          6.6         2.1  virginica
+107          4.9         2.5          4.5         1.7  virginica
+108          7.3         2.9          6.3         1.8  virginica
+109          6.7         2.5          5.8         1.8  virginica
+110          7.2         3.6          6.1         2.5  virginica
+111          6.5         3.2          5.1         2.0  virginica
+112          6.4         2.7          5.3         1.9  virginica
+113          6.8         3.0          5.5         2.1  virginica
+114          5.7         2.5          5.0         2.0  virginica
+115          5.8         2.8          5.1         2.4  virginica
+116          6.4         3.2          5.3         2.3  virginica
+117          6.5         3.0          5.5         1.8  virginica
+118          7.7         3.8          6.7         2.2  virginica
+119          7.7         2.6          6.9         2.3  virginica
+120          6.0         2.2          5.0         1.5  virginica
+121          6.9         3.2          5.7         2.3  virginica
+122          5.6         2.8          4.9         2.0  virginica
+123          7.7         2.8          6.7         2.0  virginica
+124          6.3         2.7          4.9         1.8  virginica
+125          6.7         3.3          5.7         2.1  virginica
+126          7.2         3.2          6.0         1.8  virginica
+127          6.2         2.8          4.8         1.8  virginica
+128          6.1         3.0          4.9         1.8  virginica
+129          6.4         2.8          5.6         2.1  virginica
+130          7.2         3.0          5.8         1.6  virginica
+131          7.4         2.8          6.1         1.9  virginica
+132          7.9         3.8          6.4         2.0  virginica
+133          6.4         2.8          5.6         2.2  virginica
+134          6.3         2.8          5.1         1.5  virginica
+135          6.1         2.6          5.6         1.4  virginica
+136          7.7         3.0          6.1         2.3  virginica
+137          6.3         3.4          5.6         2.4  virginica
+138          6.4         3.1          5.5         1.8  virginica
+139          6.0         3.0          4.8         1.8  virginica
+140          6.9         3.1          5.4         2.1  virginica
+141          6.7         3.1          5.6         2.4  virginica
+142          6.9         3.1          5.1         2.3  virginica
+143          5.8         2.7          5.1         1.9  virginica
+144          6.8         3.2          5.9         2.3  virginica
+145          6.7         3.3          5.7         2.5  virginica
+146          6.7         3.0          5.2         2.3  virginica
+147          6.3         2.5          5.0         1.9  virginica
+148          6.5         3.0          5.2         2.0  virginica
+149          6.2         3.4          5.4         2.3  virginica
+150          5.9         3.0          5.1         1.8  virginica</pre>
+
+</article></slide><slide class=''><hgroup><h2>List(Cont.)</h2></hgroup><article  id="listcont.-1">
+
+<h4><strong>取值</strong></h4>
+
+<p>
+
+<ul>
+<li>[i]：取出 list 中的第 i 個物件，<code>注意！取出來的物件依舊是 list 結構！</code></li>
+<li>[[i]]：取出第 i 個物件中的全部元素，<code>注意！[[]]會破壞原本的 list 結構！</code></li>
+<li>[[i]][j]：取出第 i 個物件中的第j個元素</li>
+<li>若物件已命名，可以利用 <code>$</code> (錢字號)來提取物件</li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>List(Cont.)</h2></hgroup><article  id="listcont.-2">
+
+<h4><strong>直接來點例子吧！</strong></h4>
+
+<p>
+
+<pre class = 'prettyprint lang-r'># 取出list1中的name物件，並且保持list形態
+list1[&quot;name&quot;]</pre>
+
+<pre >$name
+[1] &quot;GU&quot;    &quot;Alger&quot; &quot;Sheng&quot;</pre>
+
+<pre class = 'prettyprint lang-r'># 取出list1中的height物件，並且破壞原本list形態
+list1[[&quot;height&quot;]]</pre>
+
+<pre >[1] 160 180 170</pre>
+
+<pre class = 'prettyprint lang-r'># 取出list1中的體重為70的元素
+list1[[&quot;weight&quot;]][3]</pre>
+
+<pre >[1] 70</pre>
+
+</article></slide><slide class=''><hgroup><h2>Pratice Time!!</h2></hgroup><article  id="pratice-time">
+
+<h4><strong>取出 list1 中，姓名為 GU，身高為180，體重為70的資料，並且存入向量 list_prac1 中</strong></h4>
+
+</article></slide><slide class=''><hgroup><h2>Answer</h2></hgroup><article  id="answer-2">
+
+<h4><strong>取出 list1 中，姓名為 GU，身高為180，體重為70的資料，並且存入向量 list_prac1 中</strong></h4>
+
+<p>
+
+<pre class = 'prettyprint lang-r'>list_prac1 &lt;- c(list1[[&quot;name&quot;]][1],
+                list1[[&quot;height&quot;]][2],
+                list1[[&quot;weight&quot;]][3])
+list_prac1</pre>
+
+<pre >[1] &quot;GU&quot;  &quot;180&quot; &quot;70&quot; </pre>
+
+</article></slide><slide class=''><hgroup><h2>Dataframe</h2></hgroup><article  id="dataframe">
+
+<h4><strong>基本介紹</strong></h4>
+
+<p>
+
+<ul>
+<li>dataframe 也是 list 的一種，是 list 的特例！</li>
+<li>dataframe 為多個<code>長度相同</code>但<code>類別不一定相同</code>的向量們合併而成</li>
+<li>dataframe 是一個二維的表格 (like Excel~)</li>
+<li>dataframe 中的各個元素必須為下列幾種類型才行得通：
+
+<ul>
+<li>數值 (numeric)</li>
+<li>字串 (character)</li>
+<li>類別 (factor)</li>
+<li>布林值 (logical)</li>
+<li>數值矩陣 (numericmatrix)</li>
+<li>list</li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Dataframe(Cont.)</h2></hgroup><article  id="dataframecont.">
+
+<h4><strong>建立一個 dataframe 吧！</strong></h4>
+
+<p>
+
+<ul>
+<li>我們現在要利用<code>data.frame()</code>函數，建立一個 dataframe 包含了三位同學的身高、體重、戶籍地資料。且利用<code>rownames()</code>函數，將姓名填入列名稱中</li>
+</ul>
+
+<pre class = 'prettyprint lang-r'># 建立身高、體重與戶籍地向量
+height &lt;- c(160, 170, 180)
+weight &lt;- c(60, 70, 80)
+place &lt;- c(&quot;新北市&quot;, &quot;桃園市&quot;, &quot;臺南市&quot;)
+# 將向量擺入 dataframe 中，並且填入姓名於列名稱中
+df1 &lt;- data.frame(height = height, weight = weight, place = place)
+rownames(df1) &lt;- c(&quot;GU&quot;, &quot;Sheng&quot;, &quot;Alger&quot;)
+df1</pre>
+
+<pre >      height weight  place
+GU       160     60 新北市
+Sheng    170     70 桃園市
+Alger    180     80 臺南市</pre>
+
+</article></slide><slide class=''><hgroup><h2>Dataframe(Cont.)</h2></hgroup><article  id="dataframecont.-1">
+
+<h4><strong>取值</strong></h4>
+
+<p>
+
+<ul>
+<li>利用<code>[i,j]</code> 來對 dataframe 進行取值的動作，其中， <code>i 為列數</code>、 <code>j 為行數</code>
+
+<ul>
+<li>eg. x[1,2]，表示取出 x 物件中第1列、第2行的值</li>
+</ul></li>
+<li><code>[i,]</code> 表示取出 dataframe 中<code>第 i 列的所有資料</code>，包含所有行變數
+
+<ul>
+<li>eg. x[c(1:50),]，表示取出 x 物件中第1~50列的所有資料</li>
+</ul></li>
+<li><code>[,j]</code> 表示取出 dataframe 中<code>第 j 行的所有資料</code>，包含所有列資料
+
+<ul>
+<li>eg. iris[,&quot;Species&quot;]，表示取出 iris 資料中行變數為 Species 的所有資料</li>
+</ul></li>
+<li><code>$</code> (錢字號)這裡可以用來<code>挑選特定欄位</code>！記得搭配<code>tab鍵</code>讓你事半功倍！</li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Dataframe(Cont.)</h2></hgroup><article  id="dataframecont.-2">
+
+<h4><strong>直接來點例子吧！</strong></h4>
+
+<p>
+
+<pre class = 'prettyprint lang-r'># 取出df1中GU的個人資料
+df1[1,]</pre>
+
+<pre >   height weight  place
+GU    160     60 新北市</pre>
+
+<pre class = 'prettyprint lang-r'># 取出Sheng的身高、體重資料
+df1[2, c(1:2)]</pre>
+
+<pre >      height weight
+Sheng    170     70</pre>
+
+<pre class = 'prettyprint lang-r'># 取出戶籍地欄位
+df1$place</pre>
+
+<pre >[1] 新北市 桃園市 臺南市
+Levels: 臺南市 桃園市 新北市</pre>
+
+</article></slide><slide class=''><hgroup><h2>Pratice Time!!</h2></hgroup><article  id="pratice-time-1">
+
+<h4><strong>請取出 iris 中，Species 為 versicolor 的資料，且欄位只包含 Sepal.Length、Petal.Length、Species</strong></h4>
+
+</article></slide><slide class=''><hgroup><h2>Answer</h2></hgroup><article  id="answer-3">
+
+<h4><strong>請取出 iris 中，Species 為 versicolor 的資料，且欄位只包含 Sepal.Length、Petal.Length、Species</strong></h4>
+
+<p>
+
+<pre class = 'prettyprint lang-r'>iris[iris$Species == &quot;versicolor&quot;, c(&quot;Sepal.Length&quot;, &quot;Petal.Length&quot;, &quot;Species&quot;)]</pre>
+
+<pre >    Sepal.Length Petal.Length    Species
+51           7.0          4.7 versicolor
+52           6.4          4.5 versicolor
+53           6.9          4.9 versicolor
+54           5.5          4.0 versicolor
+55           6.5          4.6 versicolor
+56           5.7          4.5 versicolor
+57           6.3          4.7 versicolor
+58           4.9          3.3 versicolor
+59           6.6          4.6 versicolor
+60           5.2          3.9 versicolor
+61           5.0          3.5 versicolor
+62           5.9          4.2 versicolor
+63           6.0          4.0 versicolor
+64           6.1          4.7 versicolor
+65           5.6          3.6 versicolor
+66           6.7          4.4 versicolor
+67           5.6          4.5 versicolor
+68           5.8          4.1 versicolor
+69           6.2          4.5 versicolor
+70           5.6          3.9 versicolor
+71           5.9          4.8 versicolor
+72           6.1          4.0 versicolor
+73           6.3          4.9 versicolor
+74           6.1          4.7 versicolor
+75           6.4          4.3 versicolor
+76           6.6          4.4 versicolor
+77           6.8          4.8 versicolor
+78           6.7          5.0 versicolor
+79           6.0          4.5 versicolor
+80           5.7          3.5 versicolor
+81           5.5          3.8 versicolor
+82           5.5          3.7 versicolor
+83           5.8          3.9 versicolor
+84           6.0          5.1 versicolor
+85           5.4          4.5 versicolor
+86           6.0          4.5 versicolor
+87           6.7          4.7 versicolor
+88           6.3          4.4 versicolor
+89           5.6          4.1 versicolor
+90           5.5          4.0 versicolor
+91           5.5          4.4 versicolor
+92           6.1          4.6 versicolor
+93           5.8          4.0 versicolor
+94           5.0          3.3 versicolor
+95           5.6          4.2 versicolor
+96           5.7          4.2 versicolor
+97           5.7          4.2 versicolor
+98           6.2          4.3 versicolor
+99           5.1          3.0 versicolor
+100          5.7          4.1 versicolor</pre>
+
+</article></slide><slide class=''><hgroup><h2>Dataframe(Cont.)</h2></hgroup><article  id="dataframecont.-3">
+
+<h4><strong>合併</strong></h4>
+
+<ul>
+<li><code>rbind()</code>：上下合併 (列合併)</li>
+<li><code>cbind()</code>：左右合併 (行合併)</li>
+</ul>
+
+<h4><strong>直接來點例子吧！</strong></h4>
+
+<p>
+
+<pre class = 'prettyprint lang-r'># 將向量c(1, 2, 3)與向量c(4, 5, 6)上下合併
+rbind(c(1, 2, 3), c(4, 5, 6))</pre>
+
+<pre >     [,1] [,2] [,3]
+[1,]    1    2    3
+[2,]    4    5    6</pre>
+
+<pre class = 'prettyprint lang-r'># 將向量c(1, 2, 3)與向量c(4, 5, 6)左右合併
+cbind(c(1, 2, 3), c(4, 5, 6))</pre>
+
+<pre >     [,1] [,2]
+[1,]    1    4
+[2,]    2    5
+[3,]    3    6</pre>
+
+</article></slide><slide class=''><hgroup><h2>Practice Time!!</h2></hgroup><article  id="practice-time-2">
+
+<h4><strong>請新增兩名資料至 df1 中，以及一個新欄位為是否畢業，新增資料如下：</strong></h4>
+
+<p>
+
+<ol>
+<li>第一位：Rafe，身高：175，體重：75，戶籍地：臺北市<br/></li>
+<li>第二位：Johnson，身高：177，體重：77，戶籍地：新竹市<br/></li>
+<li>除了 Rafe 與 Johnson 外其餘三位皆未畢業 (使用 TRUE / FALSE 呈現)</li>
+</ol>
+
+</article></slide><slide class=''><hgroup><h2>Answer</h2></hgroup><article  id="answer-4">
+
+<h4><strong>請新增兩名資料至 df1 中，以及一個新欄位為是否畢業</strong></h4>
+
+<p>
+
+<pre class = 'prettyprint lang-r'># 新增一dataframe為新增的兩名資料
+df2 &lt;- data.frame(height = c(175, 177),
+                  weight = c(75, 77),
+                  place = c(&quot;臺北市&quot;, &quot;新竹市&quot;))
+# 填入姓名
+rownames(df2) &lt;- c(&quot;Johnson&quot;, &quot;Rafe&quot;)
+
+# 上下合併df1與df2
+df3 &lt;- rbind(df1, df2)
+
+# 新增欄位是否畢業
+graduate &lt;- c(FALSE, FALSE, FALSE, TRUE, TRUE)
+df &lt;- cbind(df3, graduate)
+df</pre>
+
+</article></slide><slide class=''><hgroup><h2>Answer(Output)</h2></hgroup><article  id="answeroutput">
+
+<h4><strong>請新增兩名資料至 df1 中，以及一個新欄位為是否畢業</strong></h4>
+
+<p>
+
+<pre >        height weight  place graduate
+GU         160     60 新北市    FALSE
+Sheng      170     70 桃園市    FALSE
+Alger      180     80 臺南市    FALSE
+Johnson    175     75 臺北市     TRUE
+Rafe       177     77 新竹市     TRUE</pre>
+
+</article></slide><slide class=''><hgroup><h2>Pratice Time!!</h2></hgroup><article  id="pratice-time-2">
+
+<h4><strong>請取出 list1 中，姓名為 Alger，體重為60，iris 資料集中 Species 為 setosa 且 Petal.Width &lt;= 0.2的資料，並且存入新的 list 變數中(可自行命名)</strong></h4>
+
+</article></slide><slide class=''><hgroup><h2>Answer</h2></hgroup><article  id="answer-5">
+
+<h4><strong>請取出 list1 中，姓名為 Alger，體重為60，iris 資料集中 Species 為 setosa 且 Petal.Width &lt;= 0.2的資料，並且存入新的 list 變數中(可自行命名)</strong></h4>
+
+<p>
+
+<pre class = 'prettyprint lang-r'>a &lt;- list1$name[2]
+b &lt;- list1$weight[1]
+c &lt;- list1$iris[list1$iris$Species == &quot;setosa&quot;,]
+list_prac2 &lt;- list(name = a,
+                   weight = b,
+                   iris = c)</pre>
+
+</article></slide><slide class='segue dark nobackground'><hgroup class = 'auto-fadein'><h2>Ch05 Read Data in R &amp; Write Data out R</h2></hgroup><article  id="ch05-read-data-in-r-write-data-out-r">
+
+</article></slide><slide class=''><hgroup><h2>Outline of Read Data in R &amp; Write Data out R</h2></hgroup><article  id="outline-of-read-data-in-r-write-data-out-r">
+
+<ul style="font-size: 120%">
+
+<li>
+
+設定你的工作目錄
+
+</li>
+
+<li>
+
+編碼問題很大?!
+
+</li>
+
+<li>
+
+教你讀取/寫出csv資料集
+
+</li>
+
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Read Data in R &amp; Write Data out R</h2></hgroup><article  id="read-data-in-r-write-data-out-r">
+
+<h4><strong>設定你的工作目錄</strong></h4>
+
+<p>
+
+<ul>
+<li>首先利用 <code>getwd()</code> 來找到目前的工作目錄位置</li>
+<li>工作目錄的設定與<code>讀取電腦上檔案的相對位置</code>有關，幫助 coding 更順暢！</li>
+<li>可以利用 <code>setwd(dir)</code> 來設定你想要的工作目錄位置
+
+<ul>
+<li>dir 為 setwd() 的參數，表示<code>你想要設定的工作目錄位置</code>！
+
+<p></li>
+</ul></li>
+</ul>
+
+<pre class = 'prettyprint lang-r'># 目前的工作目錄
+getwd()
+# 設定新的工作目錄
+setwd(&quot;~/Desktop/DSPdata/&quot;)</pre>
+
+</article></slide><slide class=''><hgroup><h2>Read Data in R &amp; Write Data out R(Cont.)</h2></hgroup><article  id="read-data-in-r-write-data-out-rcont.">
+
+<h4><strong>編碼問題很大?!</strong></h4>
+
+<p>
+
+<ul>
+<li>知道檔案的編碼才能正確將檔案讀入 R 中進行進一步分析</li>
+<li>Mac 的預設編碼為 UTF-8，Windows 則是 BIG5</li>
+<li>讀檔三部曲：
+
+<ul>
+<li>利用<code>readBin(con , what = &quot;raw&quot;, n = 3)</code> 檢查檔案有沒有 BOM，<a href='https://zh.wikipedia.org/wiki/位元組順序記號' title=''>BOM是什麼？</a></li>
+<li>如果沒有 BOM ，利用 <code>file()</code> 搭配 <code>readLines()</code> 兩個函數來測試編碼，<code>readLines(file(&quot;檔名.csv&quot;, encoding = &quot;BIG5&quot;), n = 3)</code></li>
+<li>確認編碼後，就可以使用 <code>read.table()</code> 或 <code>read.csv()</code> 將檔案讀入啦！</li>
+</ul></li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Read Data in R &amp; Write Data out R(Cont.)</h2></hgroup><article  id="read-data-in-r-write-data-out-rcont.-1">
+
+<h4><strong>教你讀取csv資料集！</strong></h4>
+
+<p>
+
+<ul>
+<li><code>read.csv(file, header = FALSE, sep = &quot;,&quot;,</code><br/><code>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;stringsAsFactors = default.stringsAsFactors(),</code><br/><code>&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;fileEncoding = &quot;&quot;, ...)</code>
+
+<p>
+
+<ul>
+<li><code>file</code>：讀取檔案的路徑</li>
+<li><code>header</code> = FALSE：檔案是否有標題(預設為無)</li>
+<li><code>sep</code> = &quot;&quot;：分隔符號(預設為逗號)</li>
+<li><code>stringsAsFactors</code>：字串變數是否要以 <code>Factor</code> 形式儲存</li>
+<li><code>fileEncoding</code> = &quot;&quot;：檔案編碼</li>
+</ul></li>
+<li>read.table大同小異！請自行和 R 說 help 一下</li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Read Data in R &amp; Write Data out R(Cont.)</h2></hgroup><article  id="read-data-in-r-write-data-out-rcont.-2">
+
+<h4><strong>教你寫出csv資料集！</strong></h4>
+
+<p>
+
+<ul>
+<li><code>write.csv(x, file = &quot;&quot;, sep = &quot; &quot;, row.names = TRUE, fileEncoding = &quot;&quot;, ...)</code>
+
+<p>
+
+<ul>
+<li><code>x</code>：欲寫出的 data 名稱</li>
+<li><code>file</code>：寫出檔案的路徑</li>
+<li><code>sep</code> = &quot; &quot;：分隔符號</li>
+<li><code>row.names = TRUE</code>：是否要有列名稱/列編號(預設為是)</li>
+<li><code>fileEncoding</code> = &quot;&quot;：檔案編碼</li>
+</ul></li>
+<li>write.table大同小異！請自行和 R 說 help 一下</li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Read Data in R &amp; Write Data out R(Cont.)</h2></hgroup><article  id="read-data-in-r-write-data-out-rcont.-3">
+
+<h4><strong>Demo 一下！</strong></h4>
+
+<p>
+
+<pre class = 'prettyprint lang-r'>## 將iris資料集寫出
+write.csv(iris, 
+          file = &quot;iris.csv&quot;,
+          row.names = F)</pre>
+
+<p>
+
+<ul>
+<li><strong>注意，若 file 參數中只輸入「欲輸出檔名.csv」，表示將檔案直接輸出到工作目錄中噢！</strong></li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Read Data in R &amp; Write Data out R(Cont.)</h2></hgroup><article  id="read-data-in-r-write-data-out-rcont.-4">
+
+<h4><strong>Demo 一下！</strong></h4>
+
+<p>
+
+<pre class = 'prettyprint lang-r'>## 將iris資料集寫入
+# 檢查編碼，查詢網站後發現沒有BOM
+readBin(&quot;iris.csv&quot;, what = &quot;raw&quot;, n = 3)
+
+# 利用readLines()測試是否為BIG5，發現沒錯！
+readLines(file(&quot;iris.csv&quot;, encoding = &quot;BIG5&quot;), n = 3)</pre>
+
+</article></slide><slide class=''><hgroup><h2>Read Data in R &amp; Write Data out R(Cont.)</h2></hgroup><article  id="read-data-in-r-write-data-out-rcont.-5">
+
+<h4><strong>Demo 一下！</strong></h4>
+
+<p>
+
+<pre class = 'prettyprint lang-r'># 利用read.csv讀入資料
+data &lt;- read.csv(&quot;iris.csv&quot;,
+         header = T,
+         sep = &quot;,&quot;,
+         stringsAsFactors = F,
+         fileEncoding = &quot;BIG5&quot;)
+head(data)</pre>
+
+<pre >  Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+1          5.1         3.5          1.4         0.2  setosa
+2          4.9         3.0          1.4         0.2  setosa
+3          4.7         3.2          1.3         0.2  setosa
+4          4.6         3.1          1.5         0.2  setosa
+5          5.0         3.6          1.4         0.2  setosa
+6          5.4         3.9          1.7         0.4  setosa</pre>
+
+</article></slide><slide class=''><hgroup><h2>Practice Time!!</h2></hgroup><article  id="practice-time-3">
+
+<h4><strong>我們來將明天要用到的檔案讀入R吧！</strong></h4>
+
+<p>
+
+<ol>
+<li>歷年護理人員資料.csv</li>
+<li>ubike-hour-201502-utf8.csv<br/>
+
+<p>
+
+<p>
+
+請先將檔案下載至你們的工作目錄中！</li>
+</ol>
+
+</article></slide><slide class=''><hgroup><h2>Answer</h2></hgroup><article  id="answer-6">
+
+<h4><strong>我們來將明天要用到的檔案讀入R吧！</strong></h4>
+
+<p>
+
+<pre class = 'prettyprint lang-r'>## 讀入歷年護理人員資料.csv
+# 檢查編碼，查詢網站後發現沒有BOM
+readBin(&quot;歷年護理人員資料.csv&quot;, what = &quot;raw&quot;, n = 3)</pre>
+
+<pre >[1] 22 e6 80</pre>
+
+<pre class = 'prettyprint lang-r'># 利用readLines()測試是否為BIG5，發現有錯！
+readLines(file(&quot;歷年護理人員資料.csv&quot;, encoding = &quot;BIG5&quot;), n = 3)</pre>
+
+<pre >Warning: 輸入連結 &#39;歷年護理人員資料.csv&#39; 中的輸入不正確</pre>
+
+<pre >Warning in readLines(file(&quot;歷年護理人員資料.csv&quot;, encoding = &quot;BIG5&quot;), : 於
+&#39;歷年護理人員資料.csv&#39; 找到不完整的最後一列</pre>
+
+<pre >[1] &quot;\&quot;&quot;</pre>
+
+</article></slide><slide class=''><hgroup><h2>Answer(Cont.)</h2></hgroup><article  id="answercont.">
+
+<h4><strong>我們來將明天要用到的檔案讀入R吧！</strong></h4>
+
+<p>
+
+<pre class = 'prettyprint lang-r'># 利用readLines()測試是否為UTF-8，發現正確！
+readLines(file(&quot;歷年護理人員資料.csv&quot;, encoding = &quot;UTF-8&quot;), n = 3)</pre>
+
+<pre >[1] &quot;\&quot;性別\&quot;,\&quot;醫療層級\&quot;,\&quot;縣市\&quot;,\&quot;年齡\&quot;,\&quot;年度\&quot;,\&quot;人數\&quot;&quot;
+[2] &quot;\&quot;F\&quot;,\&quot;醫學中心\&quot;,\&quot;高雄市\&quot;,20,2005,56&quot;                 
+[3] &quot;\&quot;F\&quot;,\&quot;醫學中心\&quot;,\&quot;高雄市\&quot;,20,2006,17&quot;                 </pre>
+
+<pre class = 'prettyprint lang-r'># 讀入檔案
+data1 &lt;- read.csv(&quot;歷年護理人員資料.csv&quot;,
+                 header = T,
+                 sep = &quot;,&quot;,
+                 fileEncoding = &quot;UTF-8&quot;)</pre>
+
+</article></slide><slide class=''><hgroup><h2>Answer(Cont.)</h2></hgroup><article  id="answercont.-1">
+
+<h4><strong>我們來將明天要用到的檔案讀入R吧！</strong></h4>
+
+<p>
+
+<pre class = 'prettyprint lang-r'>## 讀入ubike-hour-201502-utf8.csv
+# 檢查編碼，查詢網站後發現沒有BOM
+readBin(&quot;ubike-hour-201502-utf8.csv&quot;, what = &quot;raw&quot;, n = 3)</pre>
+
+<pre >[1] 64 61 74</pre>
+
+<pre class = 'prettyprint lang-r'># 利用readLines()測試是否為BIG5，發現有錯！
+readLines(file(&quot;ubike-hour-201502-utf8.csv&quot;, encoding = &quot;BIG5&quot;), n = 3)</pre>
+
+<pre >Warning: 輸入連結 &#39;ubike-hour-201502-utf8.csv&#39; 中的輸入不正確</pre>
+
+<pre >Warning in readLines(file(&quot;ubike-hour-201502-utf8.csv&quot;, encoding =
+&quot;BIG5&quot;), : 於 &#39;ubike-hour-201502-utf8.csv&#39; 找到不完整的最後一列</pre>
+
+<pre >[1] &quot;date,hour,sno,sarea,sna,lat,lng,tot,avg.sbi,max.sbi,min.sbi,std.sbi,avg.bemp,max.bemp,min.bemp,std.bemp,temp,humidity,pressure,max.anemo,rainfall&quot;
+[2] &quot;2015-02-01,0,1,靽∠儔&quot;                                                                                                                            </pre>
+
+</article></slide><slide class=''><hgroup><h2>Answer(Cont.)</h2></hgroup><article  id="answercont.-2">
+
+<h4><strong>我們來將明天要用到的檔案讀入R吧！</strong></h4>
+
+<p>
+
+<pre class = 'prettyprint lang-r'># 利用readLines()測試是否UTF-8，發現正確！
+readLines(file(&quot;ubike-hour-201502-utf8.csv&quot;, encoding = &quot;UTF-8&quot;), n = 3)</pre>
+
+<pre >[1] &quot;date,hour,sno,sarea,sna,lat,lng,tot,avg.sbi,max.sbi,min.sbi,std.sbi,avg.bemp,max.bemp,min.bemp,std.bemp,temp,humidity,pressure,max.anemo,rainfall&quot;                               
+[2] &quot;2015-02-01,0,1,信義區,捷運市政府站(3號出口),25.040858,121.567904,180,4.153,11,0,3.643,175.847,180,169,3.643,13.7375487748635,87.4970014318501,1025.79130605244,1.7773507151817,0&quot;
+[3] &quot;2015-02-01,0,2,大安區,捷運國父紀念館站(2號出口),25.041,121.556945,48,1.322,5,0,1.383,46.678,48,43,1.383,13.8040099842336,86.8173159236481,1025.41134988485,0.851521511729567,0&quot;  </pre>
+
+</article></slide><slide class=''><hgroup><h2>Answer(Cont.)</h2></hgroup><article  id="answercont.-3">
+
+<h4><strong>我們來將明天要用到的檔案讀入R吧！</strong></h4>
+
+<p>
+
+<pre class = 'prettyprint lang-r'># 讀入檔案
+data2 &lt;- read.csv(&quot;ubike-hour-201502-utf8.csv&quot;,
+                  header = T,
+                  sep = &quot;,&quot;,
+                  fileEncoding = &quot;UTF-8&quot;)</pre>
+
+</article></slide><slide class=''><hgroup><h2>Answer(Cont.)</h2></hgroup><article  id="answercont.-4">
+
+<h4><strong>我們來將明天要用到的檔案讀入R吧！</strong></h4>
+
+<p>
+
+<pre class = 'prettyprint lang-r'># 看看護理人員資料前六筆
+head(data1)</pre>
+
+<pre >  性別 醫療層級   縣市 年齡 年度 人數
+1    F 醫學中心 高雄市   20 2005   56
+2    F 醫學中心 高雄市   20 2006   17
+3    F 醫學中心 高雄市   20 2007   11
+4    F 醫學中心 高雄市   20 2008    1
+5    F 醫學中心 高雄市   20 2009    5
+6    F 醫學中心 高雄市   20 2010    5</pre>
+
+</article></slide><slide class=''><hgroup><h2>Answer(Cont.)</h2></hgroup><article  id="answercont.-5">
+
+<h4><strong>我們來將明天要用到的檔案讀入R吧！</strong></h4>
+
+<p>
+
+<pre class = 'prettyprint lang-r'># 看看ubike資料前六筆
+head(data2)</pre>
+
+<pre >        date hour sno  sarea                       sna      lat      lng
+1 2015-02-01    0   1 信義區     捷運市政府站(3號出口) 25.04086 121.5679
+2 2015-02-01    0   2 大安區 捷運國父紀念館站(2號出口) 25.04100 121.5569
+3 2015-02-01    0   3 信義區                台北市政府 25.03780 121.5652
+4 2015-02-01    0   5 信義區                  興雅國中 25.03656 121.5687
+5 2015-02-01    0   7 信義區         信義廣場(台北101) 25.03304 121.5656
+6 2015-02-01    0   8 信義區                  世貿三館 25.03521 121.5637
+  tot avg.sbi max.sbi min.sbi std.sbi avg.bemp max.bemp min.bemp std.bemp
+1 180   4.153      11       0   3.643  175.847      180      169    3.643
+2  48   1.322       5       0   1.383   46.678       48       43    1.383
+3  40   0.407       1       0   0.495   39.593       40       39    0.495
+4  60   1.220       3       0   0.966   57.780       59       56    0.966
+5  80   2.949       9       0   3.345   75.983       79       69    3.476
+6  60   1.983       7       0   2.543   57.017       59       52    2.543
+      temp humidity pressure max.anemo rainfall
+1 13.73755 87.49700 1025.791 1.7773507        0
+2 13.80401 86.81732 1025.411 0.8515215        0
+3 13.82918 87.25139 1025.754 1.6134319        0
+4 13.83382 87.56932 1025.875 1.9129308        0
+5 13.92348 87.48805 1025.863 1.9093223        0
+6 13.88992 87.21782 1025.738 1.6235643        0</pre>
+
+</article></slide><slide class='segue dark nobackground'><hgroup class = 'auto-fadein'><h2>To be continued&#8230;&#8230;</h2></hgroup><article  id="to-be-continued......">
+
+</article></slide><slide class=''><hgroup><h2>學無止盡</h2></hgroup><article >
+
+<p>
+
+<ul>
+<li>明天開始接連三天還有許多更精彩的上手課程！</li>
+<li>鄉民們請愛用：<a href='https://www.ptt.cc/bbs/R_Language/index.html' title=''>ptt R_Language版</a></li>
+<li><a href='https://groups.google.com/forum/#!forum/taiwanruser' title=''>R軟體使用者論壇</a></li>
+<li>或是歡迎來信 <a href='mailto:chengu1024@gmail.com' title=''>chengu1024@gmail.com</a> 與我一起交流！</li>
+<li>當然，直接現場跟各位講師請教吸收更快！</li>
+</ul>
+
+</article></slide><slide class='segue dark nobackground'><hgroup class = 'auto-fadein'><h2>Thanks for your listening today :)</h2></hgroup><article  id="thanks-for-your-listening-today"></article></slide>
+
+
+  <slide class="backdrop"></slide>
+
+</slides>
+
+<script src="RBasicforDSPcamp_files/ioslides-13.5.1/js/modernizr.custom.45394.js"></script>
+<script src="RBasicforDSPcamp_files/ioslides-13.5.1/js/prettify/prettify.js"></script>
+<script src="RBasicforDSPcamp_files/ioslides-13.5.1/js/prettify/lang-r.js"></script>
+<script src="RBasicforDSPcamp_files/ioslides-13.5.1/js/prettify/lang-yaml.js"></script>
+<script src="RBasicforDSPcamp_files/ioslides-13.5.1/js/hammer.js"></script>
+<script src="RBasicforDSPcamp_files/ioslides-13.5.1/js/slide-controller.js"></script>
+<script src="RBasicforDSPcamp_files/ioslides-13.5.1/js/slide-deck.js"></script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+<!-- map slide visiblity events into shiny -->
+<script>
+  (function() {
+    if (window.jQuery) {
+       window.jQuery(document).on('slideleave', function(e) {
+         window.jQuery(e.target).trigger('hidden');
+      });
+       window.jQuery(document).on('slideenter', function(e) {
+         window.jQuery(e.target).trigger('shown');
+      });
+    }
+  })();
+</script>
+
+</body>
+</html>
