@@ -13,7 +13,7 @@ output:
 
 ```{r setup, include=FALSE, cache=FALSE}
 suppressPackageStartupMessages({
-    library(knitr) 
+  library(knitr) 
   library(magrittr)
   library(dplyr)
   library(ggplot2)
@@ -72,10 +72,16 @@ las2 <- theme(axis.text.x = element_text(angle = 90, hjust = 1))
 A convenient tool to generate reproducible document.  
 
 - [Markdown](http://daringfireball.net/projects/markdown/basics)
-    - Lightweightmarkuplanguage
+    - Light weight markup language
     - Remove HTML tag for higher readibility.
     - Inline HTML is avaliable.
 
+## 講人話
+
+- Markdown 是一種**易讀**、**易寫**的標記式語言
+- 簡單排版
+    - 井字號(#)代表最大標題
+    - 
 
 ## What is RMarkdown
 
@@ -501,4 +507,19 @@ https://www.youtube.com/watch?v=OHKZLeKlUsM
 <br><br><br><br><br>
 <div align = 'center'>
 <hh>Thank You!</hh>
+</div>
+
+----- 
+
+<br><br><br><br><br>
+<div align = 'center'>
+<hh>別走！ 彩蛋！</hh>
+</div>
+
+------
+
+<br><br><br><br><br>
+<div align = 'center'>
+<hh>請各組<br>利用RMarkdown作專案資料集介紹</hh><br>
+包含資料集介紹、資料長相
 </div>
