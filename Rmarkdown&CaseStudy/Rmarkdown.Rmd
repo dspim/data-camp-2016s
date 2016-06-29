@@ -79,9 +79,7 @@ A convenient tool to generate reproducible document.
 ## 講人話
 
 - Markdown 是一種**易讀**、**易寫**的標記式語言
-- 簡單排版
-    - 井字號(#)代表最大標題
-    - 
+- 簡單排版：井字號(#)代表最大標題
 
 ## What is RMarkdown
 
