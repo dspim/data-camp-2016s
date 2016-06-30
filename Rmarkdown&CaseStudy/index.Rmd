@@ -353,28 +353,36 @@ ggmap(ggmap = map)
 
 ## 套件安裝
 
-- 安裝`rgdal`、`maptools`套件
+- 安裝`rgdal`、`rgeos`、`maptools`套件
 
 ```{r, eval = F}
 install.packages('rgdal')
 install.packages('maptools')
+install.packages('rgeos')
 ```
 
 ## 台灣村里界線圖資料匯入
 
 - sfn 格式為 `Large SpatialPolygon DataFrame`
-- sfn有兩個重要的資料
+- sfn有兩個重要的資料(要用`@`叫出來)
     - data 對應 `Village_NLSC_1050219.dbf` (縣市、鄉鎮、村里、及其ID)
     - polygon 對應 `Village_NLSC_1050219.shp` (用來描繪村里界線的資料)
 - `?readOGR` 查詢一下細節
     - dsn : 放置台灣村里界線圖資料夾的路徑
     - layer : 資料夾內檔案名稱(不包含副檔名`.xxx`)
 
-
-```{r, results = 'hide'}
+```{r, results = 'hide',echo = F}
 library(rgdal)
 library(maptools)
 sfn <- readOGR(dsn = 'data/村里界圖(TWD97經緯度)1050317/',
+               layer='Village_NLSC_1050219', stringsAsFactors = F)
+```
+
+```{r, results = 'hide', eval = F}
+library(rgdal)
+library(maptools)
+library(ggplot2)
+sfn <- readOGR(dsn = '..指定到下載下來檔案的路徑../村里界圖(TWD97經緯度)1050317/',
                layer='Village_NLSC_1050219', stringsAsFactors = F)
 ```
 
@@ -415,10 +423,11 @@ head(sfn@data)
 
 ```{r}
 ## 因為同一個縣市中會有相同名字的村里，為了避免Join出問題，建議加入鄉鎮名
-sfn@data <- sfn@data %>% mutate(行政區域 = paste0(T_Name,Substitute))
-tp.v <- sfn[sfn$C_Name == '臺北市',] %>% 
-  fortify(region = '行政區域')
+sfn@data <- sfn@data %>% 
+  mutate(行政區域 = paste0(T_Name,Substitute)) 
+tp.v <- sfn[sfn$C_Name == '臺北市',] %>% fortify(region = '行政區域')
 ```
+
 ```{r, eval = F}
 head(tp.v)
 ```
@@ -427,9 +436,11 @@ head(tp.v)
 
 `windows版本不用更改fileEncoding`
 
+- [20160426_data.csv下載位置](https://github.com/unityculture/DSP2016_DataCamp/tree/master/data)
+
 ```{r}
 # 別忘了先檢查以下流程喔！ setwd() getwd() head() tail() str() ...
-## Mac版本
+## Mac版本 
 data <- read.csv('data/20160426_data.csv',fileEncoding = 'big-5')
 tp.data <- data %>% filter(縣市 == '臺北市',統計年月 == '10407')
 head(tp.data)
