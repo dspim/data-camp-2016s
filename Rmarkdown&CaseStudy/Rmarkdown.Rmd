@@ -60,6 +60,13 @@ las2 <- theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
 # Agenda
 
+## Agenda
+
+- Markdown 介紹
+- Rmarkdown 介紹
+- Markdown & Rcode chunk 介紹
+- Exercise
+
 ## What does data analyst actually do
 
 <center>
