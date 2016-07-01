@@ -539,17 +539,18 @@ ggmap(ggmap = map)
 </article></slide><slide class=''><hgroup><h2>套件安裝</h2></hgroup><article >
 
 <ul>
-<li>安裝<code>rgdal</code>、<code>maptools</code>套件</li>
+<li>安裝<code>rgdal</code>、<code>rgeos</code>、<code>maptools</code>套件</li>
 </ul>
 
 <pre class = 'prettyprint lang-r'>install.packages(&#39;rgdal&#39;)
-install.packages(&#39;maptools&#39;)</pre>
+install.packages(&#39;maptools&#39;)
+install.packages(&#39;rgeos&#39;)</pre>
 
 </article></slide><slide class=''><hgroup><h2>台灣村里界線圖資料匯入</h2></hgroup><article >
 
 <ul>
 <li>sfn 格式為 <code>Large SpatialPolygon DataFrame</code></li>
-<li>sfn有兩個重要的資料
+<li>sfn有兩個重要的資料(要用<code>@</code>叫出來)
 
 <ul>
 <li>data 對應 <code>Village_NLSC_1050219.dbf</code> (縣市、鄉鎮、村里、及其ID)</li>
@@ -565,7 +566,8 @@ install.packages(&#39;maptools&#39;)</pre>
 
 <pre class = 'prettyprint lang-r'>library(rgdal)
 library(maptools)
-sfn &lt;- readOGR(dsn = &#39;data/村里界圖(TWD97經緯度)1050317/&#39;,
+library(ggplot2)
+sfn &lt;- readOGR(dsn = &#39;..指定到下載下來檔案的路徑../村里界圖(TWD97經緯度)1050317/&#39;,
                layer=&#39;Village_NLSC_1050219&#39;, stringsAsFactors = F)</pre>
 
 <pre class = 'prettyprint lang-r'>head(sfn@data)
@@ -617,9 +619,9 @@ sfn@polygons[[1]]</pre>
 </ul>
 
 <pre class = 'prettyprint lang-r'>## 因為同一個縣市中會有相同名字的村里，為了避免Join出問題，建議加入鄉鎮名
-sfn@data &lt;- sfn@data %&gt;% mutate(行政區域 = paste0(T_Name,Substitute))
-tp.v &lt;- sfn[sfn$C_Name == &#39;臺北市&#39;,] %&gt;% 
-  fortify(region = &#39;行政區域&#39;)</pre>
+sfn@data &lt;- sfn@data %&gt;% 
+  mutate(行政區域 = paste0(T_Name,Substitute)) 
+tp.v &lt;- sfn[sfn$C_Name == &#39;臺北市&#39;,] %&gt;% fortify(region = &#39;行政區域&#39;)</pre>
 
 <pre class = 'prettyprint lang-r'>head(tp.v)</pre>
 
@@ -627,8 +629,12 @@ tp.v &lt;- sfn[sfn$C_Name == &#39;臺北市&#39;,] %&gt;%
 
 <p><code>windows版本不用更改fileEncoding</code></p>
 
+<ul>
+<li><a href='https://github.com/unityculture/DSP2016_DataCamp/tree/master/data' title=''>20160426_data.csv下載位置</a></li>
+</ul>
+
 <pre class = 'prettyprint lang-r'># 別忘了先檢查以下流程喔！ setwd() getwd() head() tail() str() ...
-## Mac版本
+## Mac版本 
 data &lt;- read.csv(&#39;data/20160426_data.csv&#39;,fileEncoding = &#39;big-5&#39;)
 tp.data &lt;- data %&gt;% filter(縣市 == &#39;臺北市&#39;,統計年月 == &#39;10407&#39;)
 head(tp.data)</pre>
@@ -784,7 +790,7 @@ power_map %&gt;% head</pre>
 
 <p>用力哭泣！！！ T &#8230; T</p>
 
-<p><img src="index_files/figure-html/unnamed-chunk-18-1.png" width="720" style="display: block; margin: auto;" /></p>
+<p><img src="index_files/figure-html/unnamed-chunk-19-1.png" width="720" style="display: block; margin: auto;" /></p>
 
 </article></slide><slide class=''><hgroup><h2></h2></hgroup><article >
 
@@ -822,7 +828,7 @@ ggmap(bg, extent = &quot;device&quot;) +
 
 </article></slide><slide class=''><hgroup><h2></h2></hgroup><article >
 
-<p><img src="index_files/figure-html/unnamed-chunk-20-1.png" width="720" style="display: block; margin: auto;" /></p>
+<p><img src="index_files/figure-html/unnamed-chunk-21-1.png" width="720" style="display: block; margin: auto;" /></p>
 
 </article></slide><slide class=''><hgroup><h2></h2></hgroup><article >
 
@@ -852,8 +858,8 @@ ggmap(bg, extent = &quot;device&quot;) +
 </article></slide><slide class=''><hgroup><h2>雷達圖使用時機</h2></hgroup><article >
 
 <div style="float:left;width:48%;">
-<div id="htmlwidget-5153" style="width:100%;height:500px;" class="highchart html-widget"></div>
-<script type="application/json" data-for="htmlwidget-5153">{"x":{"hc_opts":{"title":{"text":"第5群 - 單身小資女族"},"credits":{"enabled":false},"exporting":{"enabled":false},"plotOptions":{"series":{"turboThreshold":0}},"chart":{"polar":true,"type":"line","height":"400","width":"400"},"xAxis":{"categories":["女男比","平均教育程度","扶老比","有偶比例","每戶平均用電度數","綜合所得中位數"],"tickmarkPlacement":"on","lineWidth":0},"yAxis":{"gridLineInterpolation":"polygon","lineWidth":0,"min":0,"max":1},"series":[{"name":"第5群 - 單身小資女族","data":[0.760575016523463,0.442355567001459,0.516549528558837,0.324203974761624,0.682102572429006,0.254925181364136],"pointPlacement":"on","color":"#FB9A99"},{"name":"各群平均","data":[0.520660295801657,0.498234276805767,0.52524182564392,0.453711339078422,0.561886024869105,0.389589320342519],"pointPlacement":"on","color":"#474747"}]},"theme":null,"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","drillUpText":"Back to {series.name}","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"thousandsSep":" ","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":[],"debug":false},"evals":[],"jsHooks":[]}</script></div>
+<div id="htmlwidget-6028" style="width:100%;height:500px;" class="highchart html-widget"></div>
+<script type="application/json" data-for="htmlwidget-6028">{"x":{"hc_opts":{"title":{"text":"第5群 - 單身小資女族"},"credits":{"enabled":false},"exporting":{"enabled":false},"plotOptions":{"series":{"turboThreshold":0}},"chart":{"polar":true,"type":"line","height":"400","width":"400"},"xAxis":{"categories":["女男比","平均教育程度","扶老比","有偶比例","每戶平均用電度數","綜合所得中位數"],"tickmarkPlacement":"on","lineWidth":0},"yAxis":{"gridLineInterpolation":"polygon","lineWidth":0,"min":0,"max":1},"series":[{"name":"第5群 - 單身小資女族","data":[0.760575016523463,0.442355567001459,0.516549528558837,0.324203974761624,0.682102572429006,0.254925181364136],"pointPlacement":"on","color":"#FB9A99"},{"name":"各群平均","data":[0.520660295801657,0.498234276805767,0.52524182564392,0.453711339078422,0.561886024869105,0.389589320342519],"pointPlacement":"on","color":"#474747"}]},"theme":null,"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","drillUpText":"Back to {series.name}","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"thousandsSep":" ","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":[],"debug":false},"evals":[],"jsHooks":[]}</script></div>
 
 <div style="float:left;width:48%;">
 <h3>
@@ -932,8 +938,8 @@ hc</pre>
 </ul>
 
 <div align="center">
-<div id="htmlwidget-1992" style="width:100%;height:500px;" class="highchart html-widget"></div>
-<script type="application/json" data-for="htmlwidget-1992">{"x":{"hc_opts":{"title":{"text":"A nice chart"},"credits":{"enabled":false},"exporting":{"enabled":false},"plotOptions":{"series":{"turboThreshold":0}},"subtitle":{"text":"This is a subtitle"},"xAxis":{"title":{"text":"X Axis"}},"yAxis":{"title":{"text":"Y Axis"}},"series":[{"data":[7,6.9,9.5,14.5,18.2,21.5,25.2,26.5,23.3,18.3,13.9,9.6]},{"data":[6.9,9.5,14.5,18.2,21.5,25.2,26.5,23.3,18.3,13.9,9.6,7]}],"chart":{"width":"300","height":"300"}},"theme":null,"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","drillUpText":"Back to {series.name}","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"thousandsSep":" ","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":[],"debug":false},"evals":[],"jsHooks":[]}</script></div>
+<div id="htmlwidget-1943" style="width:100%;height:500px;" class="highchart html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1943">{"x":{"hc_opts":{"title":{"text":"A nice chart"},"credits":{"enabled":false},"exporting":{"enabled":false},"plotOptions":{"series":{"turboThreshold":0}},"subtitle":{"text":"This is a subtitle"},"xAxis":{"title":{"text":"X Axis"}},"yAxis":{"title":{"text":"Y Axis"}},"series":[{"data":[7,6.9,9.5,14.5,18.2,21.5,25.2,26.5,23.3,18.3,13.9,9.6]},{"data":[6.9,9.5,14.5,18.2,21.5,25.2,26.5,23.3,18.3,13.9,9.6,7]}],"chart":{"width":"300","height":"300"}},"theme":null,"conf_opts":{"global":{"Date":null,"VMLRadialGradientURL":"http =//code.highcharts.com/list(version)/gfx/vml-radial-gradient.png","canvasToolsURL":"http =//code.highcharts.com/list(version)/modules/canvas-tools.js","getTimezoneOffset":null,"timezoneOffset":0,"useUTC":true},"lang":{"contextButtonTitle":"Chart context menu","decimalPoint":".","downloadJPEG":"Download JPEG image","downloadPDF":"Download PDF document","downloadPNG":"Download PNG image","downloadSVG":"Download SVG vector image","drillUpText":"Back to {series.name}","invalidDate":null,"loading":"Loading...","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"noData":"No data to display","numericSymbols":["k","M","G","T","P","E"],"printChart":"Print chart","resetZoom":"Reset zoom","resetZoomTitle":"Reset zoom level 1:1","shortMonths":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"thousandsSep":" ","weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}},"type":"chart","fonts":[],"debug":false},"evals":[],"jsHooks":[]}</script></div>
 
 </article></slide><slide class=''><hgroup><h2></h2></hgroup><article >
 
@@ -982,8 +988,8 @@ radar.data$mean &lt;- rowMeans(x = radar.data[,-1])</pre>
 
 <pre class = 'prettyprint lang-r'>head(radar.data)</pre>
 
-<div id="htmlwidget-6450" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-6450">{"x":{"data":[["1","2","3","4","5","6"],["女男比","平均教育程度","扶老比_log","有偶比例","每戶平均用電度數_log","綜合所得中位數_log"],[0.272466903002263,0.137626587793984,0.610220607333308,0.227751106061217,0.426575258145798,0.124434720742731],[0.552394400048068,0.746946675095014,0.340311845503325,0.809993143264232,0.611037047559653,0.770005839008807],[0.609313370146899,0.801202650649786,0.712749058764887,0.577372565266684,0.620769611826296,0.608722860537596],[0.43086256558387,0.299747024329964,0.522667006733445,0.303722141085217,0.511673219039652,0.202092861151155],[0.760575016523463,0.442355567001459,0.516549528558837,0.324203974761624,0.682102572429006,0.254925181364136],[0.553307997356246,0.620332217357713,0.586524031288357,0.508572131015036,0.597197150310815,0.465288903605204],[0.493361794678676,0.471392893291569,0.594303998942079,0.392236322053638,0.556066723916957,0.31899470920469],[0.493000319073774,0.466270598926651,0.318608528027119,0.485839329119728,0.489666615724663,0.372249487125829],[0.520660295801657,0.498234276805767,0.52524182564392,0.453711339078422,0.561886024869105,0.389589320342519]],"container":"<table class=\"compact\">\n  <thead>\n    <tr>\n      <th> \u003c/th>\n      <th>index\u003c/th>\n      <th>X1\u003c/th>\n      <th>X2\u003c/th>\n      <th>X3\u003c/th>\n      <th>X4\u003c/th>\n      <th>X5\u003c/th>\n      <th>X6\u003c/th>\n      <th>X7\u003c/th>\n      <th>X8\u003c/th>\n      <th>mean\u003c/th>\n    \u003c/tr>\n  \u003c/thead>\n\u003c/table>","options":{"columnDefs":[{"className":"dt-right","targets":[2,3,4,5,6,7,8,9,10]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"rowCallback":"function(row, data) {\nvar d = parseFloat(data[2]); $(this.api().cell(row, 2).node()).html(isNaN(d) ? '' : d.toFixed(2));\nvar d = parseFloat(data[3]); $(this.api().cell(row, 3).node()).html(isNaN(d) ? '' : d.toFixed(2));\nvar d = parseFloat(data[4]); $(this.api().cell(row, 4).node()).html(isNaN(d) ? '' : d.toFixed(2));\nvar d = parseFloat(data[5]); $(this.api().cell(row, 5).node()).html(isNaN(d) ? '' : d.toFixed(2));\nvar d = parseFloat(data[6]); $(this.api().cell(row, 6).node()).html(isNaN(d) ? '' : d.toFixed(2));\nvar d = parseFloat(data[7]); $(this.api().cell(row, 7).node()).html(isNaN(d) ? '' : d.toFixed(2));\nvar d = parseFloat(data[8]); $(this.api().cell(row, 8).node()).html(isNaN(d) ? '' : d.toFixed(2));\nvar d = parseFloat(data[9]); $(this.api().cell(row, 9).node()).html(isNaN(d) ? '' : d.toFixed(2));\nvar d = parseFloat(data[10]); $(this.api().cell(row, 10).node()).html(isNaN(d) ? '' : d.toFixed(2));\n}"},"callback":null,"filter":"none"},"evals":["options.rowCallback"],"jsHooks":[]}</script>
+<div id="htmlwidget-7465" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-7465">{"x":{"data":[["1","2","3","4","5","6"],["女男比","平均教育程度","扶老比_log","有偶比例","每戶平均用電度數_log","綜合所得中位數_log"],[0.272466903002263,0.137626587793984,0.610220607333308,0.227751106061217,0.426575258145798,0.124434720742731],[0.552394400048068,0.746946675095014,0.340311845503325,0.809993143264232,0.611037047559653,0.770005839008807],[0.609313370146899,0.801202650649786,0.712749058764887,0.577372565266684,0.620769611826296,0.608722860537596],[0.43086256558387,0.299747024329964,0.522667006733445,0.303722141085217,0.511673219039652,0.202092861151155],[0.760575016523463,0.442355567001459,0.516549528558837,0.324203974761624,0.682102572429006,0.254925181364136],[0.553307997356246,0.620332217357713,0.586524031288357,0.508572131015036,0.597197150310815,0.465288903605204],[0.493361794678676,0.471392893291569,0.594303998942079,0.392236322053638,0.556066723916957,0.31899470920469],[0.493000319073774,0.466270598926651,0.318608528027119,0.485839329119728,0.489666615724663,0.372249487125829],[0.520660295801657,0.498234276805767,0.52524182564392,0.453711339078422,0.561886024869105,0.389589320342519]],"container":"<table class=\"compact\">\n  <thead>\n    <tr>\n      <th> \u003c/th>\n      <th>index\u003c/th>\n      <th>X1\u003c/th>\n      <th>X2\u003c/th>\n      <th>X3\u003c/th>\n      <th>X4\u003c/th>\n      <th>X5\u003c/th>\n      <th>X6\u003c/th>\n      <th>X7\u003c/th>\n      <th>X8\u003c/th>\n      <th>mean\u003c/th>\n    \u003c/tr>\n  \u003c/thead>\n\u003c/table>","options":{"columnDefs":[{"className":"dt-right","targets":[2,3,4,5,6,7,8,9,10]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"rowCallback":"function(row, data) {\nvar d = parseFloat(data[2]); $(this.api().cell(row, 2).node()).html(isNaN(d) ? '' : d.toFixed(2));\nvar d = parseFloat(data[3]); $(this.api().cell(row, 3).node()).html(isNaN(d) ? '' : d.toFixed(2));\nvar d = parseFloat(data[4]); $(this.api().cell(row, 4).node()).html(isNaN(d) ? '' : d.toFixed(2));\nvar d = parseFloat(data[5]); $(this.api().cell(row, 5).node()).html(isNaN(d) ? '' : d.toFixed(2));\nvar d = parseFloat(data[6]); $(this.api().cell(row, 6).node()).html(isNaN(d) ? '' : d.toFixed(2));\nvar d = parseFloat(data[7]); $(this.api().cell(row, 7).node()).html(isNaN(d) ? '' : d.toFixed(2));\nvar d = parseFloat(data[8]); $(this.api().cell(row, 8).node()).html(isNaN(d) ? '' : d.toFixed(2));\nvar d = parseFloat(data[9]); $(this.api().cell(row, 9).node()).html(isNaN(d) ? '' : d.toFixed(2));\nvar d = parseFloat(data[10]); $(this.api().cell(row, 10).node()).html(isNaN(d) ? '' : d.toFixed(2));\n}"},"callback":null,"filter":"none"},"evals":["options.rowCallback"],"jsHooks":[]}</script>
 
 </article></slide><slide class=''><hgroup><h2></h2></hgroup><article >
 
@@ -1063,7 +1069,7 @@ plotly_data %&gt;% head</pre>
 
 </article></slide><slide class=''><hgroup><h2></h2></hgroup><article >
 
-<p><img src="index_files/figure-html/unnamed-chunk-34-1.png" width="720" style="display: block; margin: auto;" /></p>
+<p><img src="index_files/figure-html/unnamed-chunk-35-1.png" width="720" style="display: block; margin: auto;" /></p>
 
 </article></slide><slide class=''><hgroup><h2></h2></hgroup><article >
 
@@ -1086,7 +1092,7 @@ ggplotly(p1)</pre>
 
 </article></slide><slide class=''><hgroup><h2></h2></hgroup><article >
 
-<p><img src="index_files/figure-html/unnamed-chunk-36-1.png" width="720" style="display: block; margin: auto;" /></p>
+<p><img src="index_files/figure-html/unnamed-chunk-37-1.png" width="720" style="display: block; margin: auto;" /></p>
 
 </article></slide><slide class=''><hgroup><h2></h2></hgroup><article >
 
